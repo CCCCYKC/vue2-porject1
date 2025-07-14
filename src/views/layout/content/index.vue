@@ -33,7 +33,10 @@ export default {
 <style lang="less" scoped>
 // 顶部样式
 .header {
+  position: sticky;
+  top: 0;
   height: 50px;
+  width: 100%;
   background: #1e78bf;
   display: flex;
   align-items: center; /* 垂直居中 */
