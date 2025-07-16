@@ -4,7 +4,7 @@
 
 <script>
 export default {    
-    name: 'LoginPage'
+    name: 'AdvertPage'
 }
 </script>
 
