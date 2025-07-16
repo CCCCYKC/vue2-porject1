@@ -7,35 +7,11 @@
           <i class="el-icon-s-data"></i>
         </div>
         <div class="item-content">
-          <span>商品订单</span>
+          <span>总销售额</span>
           <div class="num">
-            <span class="num">100</span>
+            <span class="num">￥{{totalData.saleTotal | num}}</span>
           </div>
-          <div class="bottom">今日订单数:50</div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="icon">
-          <i class="el-icon-s-data"></i>
-        </div>
-        <div class="item-content">
-          <span>交易记录</span>
-          <div class="num">
-            <span class="num">100</span>
-          </div>
-          <div class="bottom">今日交易额:50</div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="icon">
-          <i class="el-icon-s-data"></i>
-        </div>
-        <div class="item-content">
-          <span>产品数量</span>
-          <div class="num">
-            <span class="num">100</span>
-          </div>
-          <div class="bottom">今日新增数:50</div>
+          <div class="bottom">今日销售额:￥{{totalData.sale | num}}</div>
         </div>
       </div>
       <div class="item">
@@ -45,9 +21,33 @@
         <div class="item-content">
           <span>总访问量</span>
           <div class="num">
-            <span class="num">100</span>
+            <span class="num">{{totalData.viewsTotal | num}}</span>
           </div>
-          <div class="bottom">今日访问量:50</div>
+          <div class="bottom">今日访问量:{{totalData.views | num}}</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="icon">
+          <i class="el-icon-s-data"></i>
+        </div>
+        <div class="item-content">
+          <span>总收藏量</span>
+          <div class="num">
+            <span class="num">{{totalData.collectTotal | num}}</span>
+          </div>
+          <div class="bottom">今日收藏额:{{totalData.collect | num}}</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="icon">
+          <i class="el-icon-s-data"></i>
+        </div>
+        <div class="item-content">
+          <span>总支付量</span>
+          <div class="num">
+            <span class="num">￥{{totalData.payTotal | num}}</span>
+          </div>
+          <div class="bottom">今日支付量:￥{{totalData.pay | num}}</div>
         </div>
       </div>
     </div>
@@ -94,6 +94,28 @@
 <script>
 export default {
   name: "homePage",
+  data() {
+    return {
+      totalData: {}, // 首页统计信息
+    };
+  },
+  created() {
+    this.totalInfo();
+  },
+  methods: {
+    async totalInfo() {
+      let res = await this.$api.totalInfo();
+      console.log("首页统计信息----", res.data.data.list);
+      this.totalData = res.data.data.list;
+    },
+  },
+  // 过滤器--处理数据格式
+  filters:{
+    num(value){ //12345 --- 12,345
+      if(!value) return value;
+      return value.toLocaleString();
+    }
+  }
 };
 </script>
 
@@ -115,7 +137,7 @@ export default {
     flex-grow: 4;
     margin-right: 10px;
     .today-order {
-    //   height: 200px;
+      //   height: 200px;
       border: #f3f4f7 1px solid;
       display: flex;
       flex-grow: 1;
@@ -146,6 +168,7 @@ export default {
   display: flex;
   justify-content: space-around;
   .item {
+    width: 200px;
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -159,7 +182,7 @@ export default {
       font-size: 40px;
       color: #409eff;
       margin-right: 10px;
-      width: 60px;
+      width: 50px;
     }
     .item-content {
       span {
