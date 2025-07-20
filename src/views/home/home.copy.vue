@@ -56,37 +56,47 @@
     <div class="middle">
       <!-- 左边 -->
       <div class="middle-left">
-        <!-- 今日订单 -->
-        <div class="today-order">
-          <div class="title">今日订单</div>
-          <div class="content">1</div>
-        </div>
-        <!-- 本月订单 -->
-        <div class="month-order">
-          <div class="title">本月订单</div>
-          <div class="content">1</div>
-        </div>
+        <!-- 月销售额--图表 -->
+        <div class="title">月销售额</div>
+        <div class="content">1</div>
       </div>
       <!-- 右边 -->
       <div class="middle-right">
-        <div class="title">库存告警</div>
+        <!-- 图表--产品销售比例 -->
+        <div class="title">产品销售比例</div>
         <div class="content">1</div>
       </div>
     </div>
     <!-- 底部 -->
     <div class="footer">
-      <el-button type="primary" plain>
-        <i class="el-icon-folder-add"></i>
-        添加商品
-      </el-button>
-      <el-button type="success" plain>
-        <i class="el-icon-data-line"></i>
-        产品分类
-      </el-button>
-      <el-button type="info" plain>
-        <i class="el-icon-notebook-2"></i>
-        订单列表
-      </el-button>
+      <!-- 今日订单 -->
+      <div class="item">
+        <div class="title">今日订单</div>
+        <div class="content">1</div>
+      </div>
+      <!-- 本月订单 -->
+      <div class="item">
+        <div class="title">本月订单</div>
+        <div class="content">1</div>
+      </div>
+      <!-- 快捷入口 -->
+      <div class="item">
+        <div class="title">快捷入口</div>
+        <div class="content">
+          <el-button type="primary" plain>
+            <i class="el-icon-folder-add"></i>
+            添加商品
+          </el-button>
+          <el-button type="success" plain>
+            <i class="el-icon-data-line"></i>
+            产品分类
+          </el-button>
+          <el-button type="info" plain>
+            <i class="el-icon-notebook-2"></i>
+            订单列表
+          </el-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -100,52 +110,66 @@ export default {
 <style lang="less" scoped>
 .footer {
   margin: 20px;
-  el-button {
+  display: flex;
+  flex-direction: row;
+  .item {
+    flex-grow: 1;
+    width: 200px;
+    border: #f3f4f7 1px solid;
     margin-right: 10px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    .title {
+      border: #f3f4f7 1px solid;
+      height: 40px;
+      font-size: 16px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-left: 10px;
+    }
+    .content {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 .middle {
   display: flex;
   justify-content: space-between;
-  height: 400px;
+  height: 250px;
   margin: 20px;
   .middle-left {
     display: flex;
     flex-direction: column;
-    flex-grow: 4;
+    flex-grow: 7;
     margin-right: 10px;
-    .today-order {
-    //   height: 200px;
-      border: #f3f4f7 1px solid;
-      display: flex;
-      flex-grow: 1;
-      flex-direction: column;
-    }
-    .month-order {
-      border: #f3f4f7 1px solid;
-      margin-top: 10px;
-      display: flex;
-      flex-grow: 1;
-      flex-direction: column;
-    }
+    border: #f3f4f7 1px solid;
   }
   .middle-right {
     border: #f3f4f7 1px solid;
-    flex-grow: 3;
+    flex-grow: 4;
   }
   .title {
-    height: 50px;
-    font-size: 20px;
+    height: 30px;
+    font-size: 16px;
+    font-weight: bold;
     display: flex;
     align-items: center;
-    justify-content: center;
-    background: #f3f4f7;
+    margin-top: 5px;
+    margin-left: 5px;
   }
 }
 .header {
   display: flex;
   justify-content: space-around;
   .item {
+    width: 200px;
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -159,7 +183,7 @@ export default {
       font-size: 40px;
       color: #409eff;
       margin-right: 10px;
-      width: 60px;
+      width: 50px;
     }
     .item-content {
       span {
