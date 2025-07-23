@@ -14,7 +14,11 @@ const api = {
     // 获取首页图表数据
     lineInfo() {
         return axios.get(base.lineInfo)
-    }
+    },
+    // 获取产品列表分页数据
+    projectList(params) {
+        return axios.get(base.projectList, { params })
+    },
 };
 
 export default api;

@@ -109,19 +109,22 @@
         </div>
       </el-card>
       <!-- 快捷入口 -->
-      <el-card shadow="always" class="item">
+      <el-card
+        shadow="always"
+        class="item"
+        body-style="    
+        padding-top: 20px;
+        padding-left: 10px;"
+        >
         <div slot="header" class="title">快捷入口</div>
         <div class="content" style="display: flex">
-          <el-button type="primary" plain>
-            <i class="el-icon-folder-add"></i>
+          <el-button type="primary" plain icon="el-icon-folder-add">
             添加商品
           </el-button>
-          <el-button type="success" plain>
-            <i class="el-icon-data-line"></i>
+          <el-button type="success" plain icon="el-icon-data-line">
             产品分类
           </el-button>
-          <el-button type="info" plain>
-            <i class="el-icon-notebook-2"></i>
+          <el-button type="info" plain icon="el-icon-notebook-2">
             订单列表
           </el-button>
         </div>
@@ -166,7 +169,9 @@ export default {
       console.log("折线图表数据----", res.data.result.data.sale_money);
       // 处理折线图数据,将数据从接口返回的对象转换为echarts需要的数组
       const arr = res.data.result.data.sale_money;
-      const arrx =[] ,arryLine = [], arryBar = [];
+      const arrx = [],
+        arryLine = [],
+        arryBar = [];
       arr.forEach((item) => {
         arrx.push(item.name);
         arryLine.push(item.total_amount);
@@ -286,12 +291,12 @@ export default {
 
 <style lang="less" scoped>
 .footer {
-  margin: 20px;
+  margin-top: 20px;
   display: flex;
   flex-direction: row;
   .item {
     flex-grow: 1;
-    width: 220px;
+    width: 250px;
     border: #f3f4f7 1px solid;
     margin-right: 10px;
     height: 150px;
@@ -320,21 +325,18 @@ export default {
 }
 .middle {
   display: flex;
-  // width: 100%;
   height: 290px;
-  margin: 20px;
+  margin-top: 20px;
   .middle-left {
     display: flex;
     flex-direction: column;
     flex: 7;
     margin-right: 10px;
     border: #f3f4f7 1px solid;
-    // background: red;
   }
   .middle-right {
     border: #f3f4f7 1px solid;
     flex: 3;
-    // background: blue;
   }
   .title {
     height: 30px;

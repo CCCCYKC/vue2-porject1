@@ -4,12 +4,18 @@
     <div class="header">
       <div class="icon">
         <!-- 缩进展开图标 -->
-        <i v-if="isCollapse" class="el-icon-caret-right" @click="changeMenu"></i>
+        <i
+          v-if="isCollapse"
+          class="el-icon-caret-right"
+          @click="changeMenu"
+        ></i>
         <i v-else class="el-icon-caret-left" @click="changeMenu"></i>
       </div>
     </div>
     <!-- 右侧内容 -->
-    <router-view></router-view>
+    <div class="content">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -17,7 +23,8 @@
 export default {
   name: "rightContent",
   props: {
-    isCollapse: {   // 从父组件接收折叠状态
+    isCollapse: {
+      // 从父组件接收折叠状态
       type: Boolean,
       default: false, // 默认不折叠
     },
@@ -46,5 +53,9 @@ export default {
     font-size: 30px;
     cursor: pointer; /* 鼠标悬停时变为手型 */
   }
+}
+.content {
+  padding-right: 20px;
+  padding-left: 20px;
 }
 </style>

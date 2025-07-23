@@ -9,7 +9,7 @@ module.exports = defineConfig({
         ws: true, // 是否开启websocket
         changeOrigin: true, // 是否允许跨域
         pathRewrite: { // 重写路径，将/api前缀去掉
-          '^/api': '' 
+          '^/api': ''
         } 
       },
     }
