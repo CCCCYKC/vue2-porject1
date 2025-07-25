@@ -8,6 +8,7 @@ import Home from "@/views/home/home.vue";
 const Produce = () => import("@/views/produce/index.vue");
 const ProduceList = () => import("@/views/produce/list/index.vue");
 const ProduceCategory = () => import("@/views/produce/category/index.vue");
+const AddProduct = () => import("@/views/produce/list/addProduct.vue");
 
 const Order = () => import("@/views/order/index.vue");
 const OrderList = () => import("@/views/order/list/index.vue");
@@ -24,7 +25,7 @@ const routes = [
         path: "/",
         component: Layout,
         children: [
-            {   
+            {
                 path: "/",      // 首页
                 name: "home",
                 component: Home
@@ -43,6 +44,14 @@ const routes = [
                         path: "category",    //产品分类 访问路径：/produce/category
                         name: "produceCategory",
                         component: ProduceCategory
+                    },
+                    {
+                        path: "addProduct",    //添加产品 访问路径：/produce/addProduct
+                        name: "addProduct",
+                        component: AddProduct,
+                        meta: {
+                            activeMenu: "/produce/list"  // 设置侧边栏激活菜单
+                        }
                     }
                 ]
             },
@@ -91,7 +100,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    mode: "history",  
+    mode: "history",
     base: process.env.BASE_URL,
     routes
 });

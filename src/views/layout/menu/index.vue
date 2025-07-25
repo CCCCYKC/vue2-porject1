@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100vh">
     <el-menu
-      :default-active="$route.path"
+      :default-active="active"
       class="el-menu-vertical-demo"
       background-color="#112f50"
       text-color="#fff"
@@ -78,7 +78,25 @@ export default {
   data() {
     return {
       // isCollapse: false, // 控制菜单是否折叠
+      active: "", // 当前激活的菜单项
     };
+  },
+  created() {
+    // 初始化、刷新时设置激活菜单
+    this.active = this.$route.meta.activeMenu || this.$route.path;
+  },
+  watch: {
+    // 设置动态路由，
+    $route(to) {
+      console.log("路由变化", to);
+      // 当路由变化时，更新菜单的激活状态
+      let { meta, path } = to;
+      if (meta.activeMenu) {
+        this.active = meta.activeMenu;
+      } else {
+        this.active = path;
+      }
+    },
   },
   props: {
     isCollapse: {

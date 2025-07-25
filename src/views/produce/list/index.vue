@@ -30,7 +30,11 @@
       </div>
       <!-- 添加删除 -->
       <div class="btn">
-        <el-button type="warning" size="small" icon="el-icon-plus"
+        <el-button
+          type="warning"
+          size="small"
+          icon="el-icon-plus"
+          @click="toAddProduct"
           >添加商品</el-button
         >
         <el-button type="danger" size="small" icon="el-icon-delete"
@@ -79,13 +83,20 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="pagination">
+        <Pagination :pageSize="pageSize" :total="total"></Pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Pagination from "@/components/pagination/pagination.vue";
 export default {
   name: "productListPage",
+  components: {
+    Pagination,
+  },
   data() {
     return {
       formInline: {
@@ -108,10 +119,36 @@ export default {
           name: "李四",
           address: "广州市天河区体育西路",
         },
+        {
+          date: "2016-05-03",
+          name: "王小明",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
+        {
+          date: "2016-05-02",
+          name: "张三",
+          address: "北京市朝阳区芍药居",
+        },
+        {
+          date: "2016-05-04",
+          name: "李四",
+          address: "广州市天河区体育西路",
+        },
+        {
+          date: "2016-05-03",
+          name: "王小明",
+          address: "上海市普陀区金沙江路 1518 弄",
+        },
       ],
+      pageSize: 8,
+      total: 80, // 假设总条数为100
     };
   },
   methods: {
+    // 跳转到添加产品页面
+    toAddProduct() {
+      this.$router.push('/produce/addProduct');
+    },
     onSubmit() {
       console.log("submit!");
     },
@@ -123,12 +160,8 @@ export default {
     },
     // 获取产品列表数据----------
     async projectList(page) {
-      try {
-        let res = await this.$api.projectList({ page });
-        console.log("产品列表数据----", res.data);
-      } catch (error) {
-        console.error("请求失败:", error);
-      }
+      let res = await this.$api.projectList({ page });
+      console.log("产品列表数据----", res);
     },
   },
   created() {
@@ -140,9 +173,10 @@ export default {
 <style lang="less" scoped>
 .header {
   background: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   .form {
-    padding-top: 15px;
+    padding-top: 10px;
+    padding-left: 10px;
     border-bottom: #f3f4f7 solid 1px;
     .el-form-item {
       margin-bottom: 10px;
@@ -157,6 +191,9 @@ export default {
   background: #fff;
   ::v-deep .table-header {
     color: black;
+  }
+  .pagination {
+    padding: 10px;
   }
 }
 </style>

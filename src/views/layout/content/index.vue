@@ -55,7 +55,9 @@ export default {
   }
 }
 .content {
+  padding-top: 15px;
   padding-right: 20px;
   padding-left: 20px;
+  background: #f5f5f5;
 }
 </style>

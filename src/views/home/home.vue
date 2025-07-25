@@ -328,6 +328,7 @@ export default {
   height: 290px;
   margin-top: 20px;
   .middle-left {
+    background: white;
     display: flex;
     flex-direction: column;
     flex: 7;
@@ -335,6 +336,7 @@ export default {
     border: #f3f4f7 1px solid;
   }
   .middle-right {
+    background: white;
     border: #f3f4f7 1px solid;
     flex: 3;
   }
@@ -360,6 +362,7 @@ export default {
   display: flex;
   justify-content: space-around;
   .item {
+    background: white;
     width: 200px;
     display: flex;
     flex-direction: row;
