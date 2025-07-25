@@ -88,7 +88,7 @@ export default {
   watch: {
     // 设置动态路由，
     $route(to) {
-      console.log("路由变化", to);
+      // console.log("路由变化", to);
       // 当路由变化时，更新菜单的激活状态
       let { meta, path } = to;
       if (meta.activeMenu) {

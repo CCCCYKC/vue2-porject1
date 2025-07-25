@@ -7,6 +7,9 @@ const base = {
 
     // 产品列表
     projectList:'/api/goods/projectList', //产品列表分页获取数据
+
+    // 添加产品
+    selectItemCategoryByParentId:'/api/goods/itemCategory/selectItemCategoryByParentId'//商品类目
 }
 
 

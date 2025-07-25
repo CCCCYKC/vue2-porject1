@@ -47,6 +47,12 @@ const api = {
     projectList(params) {
         return axios.get(base.projectList, { params })
     },
+
+    // 商品类目获取
+    // parmas = {type:cid}
+    selectItemCategoryByParentId(params){
+        return axios.get(base.selectItemCategoryByParentId,{params})
+    }
 };
 
 export default api;
