@@ -44,22 +44,29 @@
     </div>
     <!-- 2.产品列表 -->
     <div class="content">
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-        border
-        header-cell-class-name="table-header"
-      >
-        <el-table-column
-          type="selection"
-          width="55"
-          align="center"
-        ></el-table-column>
-        <el-table-column prop="date" label="日期" width="180" align="center">
+      <!-- 表格 -->
+      <el-table :data="tableData" style="width: 100%" border header-cell-class-name="table-header">
+        <el-table-column type="selection" width="55" align="center" ></el-table-column>
+        <el-table-column prop="id" label="商品编号" width="120" align="center">
         </el-table-column>
-        <el-table-column prop="name" label="姓名" align="center">
+        <el-table-column prop="title" label="商品名称" width="120" align="center" show-overflow-tooltip>
         </el-table-column>
-        <el-table-column prop="address" label="地址" align="center">
+        <el-table-column prop="price" label="商品价格" width="120" align="center">
+        </el-table-column>
+        <el-table-column prop="category" label="商品类目" width="120" align="center">
+        </el-table-column>
+        <!-- 时间格式化处理 -->
+        <el-table-column label="添加时间" width="200" align="center">
+          <template slot-scope="scope">
+            {{ moment(scope.row.create_time).format("YYYY-MM-DD HH:mm:ss") }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="sellPoint" label="商品卖点" align="center" show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column label="商品描述" align="center" show-overflow-tooltip>
+          <template slot-scope="scope">
+            {{ removeHTMLTag(scope.row.descs) }}
+          </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="200">
           <!-- scope可以传递该行的坐标信息 -->
@@ -83,8 +90,13 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页组件 -->
       <div class="pagination">
-        <Pagination :pageSize="pageSize" :total="total"></Pagination>
+        <Pagination
+          :pageSize="pageSize"
+          :total="total"
+          @pageChanged="pageChanged"
+        ></Pagination>
       </div>
     </div>
   </div>
@@ -92,6 +104,8 @@
 
 <script>
 import Pagination from "@/components/pagination/pagination.vue";
+import moment from "moment";
+import { removeHTMLTag } from '@/views/utils/common.js'
 export default {
   name: "productListPage",
   components: {
@@ -103,65 +117,44 @@ export default {
         productName: "",
         date: "",
       },
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "王小明",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-02",
-          name: "张三",
-          address: "北京市朝阳区芍药居",
-        },
-        {
-          date: "2016-05-04",
-          name: "李四",
-          address: "广州市天河区体育西路",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小明",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-02",
-          name: "张三",
-          address: "北京市朝阳区芍药居",
-        },
-        {
-          date: "2016-05-04",
-          name: "李四",
-          address: "广州市天河区体育西路",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小明",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-      ],
+      tableData: [],
       pageSize: 8,
-      total: 80, // 假设总条数为100
+      total: 0, // 假设总条数为100
     };
   },
   methods: {
+    // 声明moment时间格式化方法
+    moment,
+    // 声明HTML标签处理方法
+    removeHTMLTag,
     // 跳转到添加产品页面
     toAddProduct() {
-      this.$router.push('/produce/addProduct');
+      this.$router.push("/produce/addProduct");
     },
+    // 查询按钮
     onSubmit() {
       console.log("submit!");
     },
+    // 编辑按钮
     handleEdit(index, row) {
       console.log(index, row);
     },
+    // 删除按钮
     handleDelete(index, row) {
       console.log(index, row);
+    },
+    // 接受子组件传递的数据重新渲染表格数据
+    pageChanged(page) {
+      console.log("当前页:", page);
+      this.projectList(page); // 调用获取产品列表数据的方法
     },
     // 获取产品列表数据----------
     async projectList(page) {
       let res = await this.$api.projectList({ page });
-      console.log("产品列表数据----", res);
+      console.log("产品列表数据----", res.data);
+      this.tableData = res.data.data;
+      this.pageSize = res.data.pageSize || 8; // 设置每页显示的条数
+      this.total = res.data.total;
     },
   },
   created() {
@@ -173,9 +166,9 @@ export default {
 <style lang="less" scoped>
 .header {
   background: #fff;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   .form {
-    padding-top: 10px;
+    padding-top: 5px;
     padding-left: 10px;
     border-bottom: #f3f4f7 solid 1px;
     .el-form-item {
@@ -193,7 +186,7 @@ export default {
     color: black;
   }
   .pagination {
-    padding: 10px;
+    padding: 5px;
   }
 }
 </style>

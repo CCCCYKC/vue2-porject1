@@ -32,8 +32,10 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
+    // 处理页码变化(传递给父组件用$emit)
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.$emit('pageChanged', val);
     },
   },
   data() {
