@@ -8,7 +8,7 @@
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="产品名称">
             <el-input
-              v-model="formInline.productName"
+              v-model="formInline.name"
               placeholder="产品名称"
               size="small"
             ></el-input>
@@ -22,24 +22,15 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit" size="small"
-              >查询</el-button
-            >
+            <el-button type="primary" @click="onSubmit" size="small" icon="el-icon-search">查询</el-button>
+            <el-button type="success" @click="onRestore" size="small" icon="el-icon-refresh-right">复原</el-button>
           </el-form-item>
         </el-form>
       </div>
       <!-- 添加删除 -->
       <div class="btn">
-        <el-button
-          type="warning"
-          size="small"
-          icon="el-icon-plus"
-          @click="toAddProduct"
-          >添加商品</el-button
-        >
-        <el-button type="danger" size="small" icon="el-icon-delete"
-          >批量删除</el-button
-        >
+        <el-button type="warning" size="small" icon="el-icon-plus" @click="toAddProduct">添加商品</el-button>
+        <el-button type="danger" size="small" icon="el-icon-delete" @click="toDelProduct">批量删除</el-button>
       </div>
     </div>
     <!-- 2.产品列表 -->
@@ -114,7 +105,7 @@ export default {
   data() {
     return {
       formInline: {
-        productName: "",
+        name: "",
         date: "",
       },
       tableData: [],
@@ -127,23 +118,49 @@ export default {
     moment,
     // 声明HTML标签处理方法
     removeHTMLTag,
-    // 跳转到添加产品页面
+    // 跳转到添加产品页面-----------
     toAddProduct() {
       this.$router.push("/produce/addProduct");
     },
-    // 查询按钮
+    // 批量删除按钮
+    toDelProduct() {
+
+    },
+    // 查询按钮----------------
     onSubmit() {
-      console.log("submit!");
+      console.log("submit!",this.formInline.name);
+      this.search(this.formInline.name);
+    },
+    // 复原按钮------------------
+    onRestore() {
+      // 让表单置空
+      this.formInline.name = '';
+      this.formInline.date = '';
+      //回到分页第一页
+      this.projectList(1);    
     },
     // 编辑按钮
     handleEdit(index, row) {
       console.log(index, row);
     },
-    // 删除按钮
+    // 删除单个数据按钮------------
     handleDelete(index, row) {
-      console.log(index, row);
+      console.log('删除单个数据操作----', index, row);
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 删除该数据----请求后台接口----同步数据库--------
+          this.handleDelete(row.id);
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
     },
-    // 接受子组件传递的数据重新渲染表格数据
+    // 分页组件emit-----接受子组件传递的数据重新渲染表格数据---------
     pageChanged(page) {
       console.log("当前页:", page);
       this.projectList(page); // 调用获取产品列表数据的方法
@@ -156,9 +173,39 @@ export default {
       this.pageSize = res.data.pageSize || 8; // 设置每页显示的条数
       this.total = res.data.total;
     },
+    // 搜索接口请求----------
+    async search (search) {
+      if(!search) {
+        return;
+      }
+      let res = await this.$api.search({ search });
+      console.log('搜索数据----', res.data);
+      if(res.data.status === 200) {   //有结果
+        this.tableData = res.data.result;
+        // 处理结果的分页
+        this.total = res.data.result.length;
+      } else {    //无结果
+        this.tableData = [];
+        this.total = 0;
+      }
+    },
+    // 删除单个数据请求-----------
+    async deleteItemById (id) {
+      let res = await this.$api.deleteItemById({ id });
+      console.log('删除单个数据请求----',res.data);
+      // 删除成功弹窗
+      if(res.data.status === 200) {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+        // 重新渲染视图
+        this.projectList(1);
+      }
+    },
   },
   created() {
-    this.projectList();
+    this.projectList(1);
   },
 };
 </script>
