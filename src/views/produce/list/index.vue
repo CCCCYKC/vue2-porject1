@@ -111,6 +111,7 @@ export default {
       tableData: [],
       pageSize: 8,
       total: 0, // 假设总条数为100
+      currentPage: 1,//默认当前页面
     };
   },
   methods: {
@@ -152,7 +153,7 @@ export default {
           type: 'warning'
         }).then(() => {
           // 删除该数据----请求后台接口----同步数据库--------
-          this.handleDelete(row.id);
+          this.deleteItemById(row.id);
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -160,9 +161,10 @@ export default {
           });          
         });
     },
-    // 分页组件emit-----接受子组件传递的数据重新渲染表格数据---------
+    // 分页传过来的页码----分页组件emit----接受子组件传递的数据重新渲染表格数据---------
     pageChanged(page) {
       console.log("当前页:", page);
+      this.currentPage = page;
       this.projectList(page); // 调用获取产品列表数据的方法
     },
     // 获取产品列表数据----------
@@ -199,8 +201,19 @@ export default {
           type: 'success',
           message: '删除成功!'
         });
-        // 重新渲染视图
-        this.projectList(1);
+        // 重新渲染视图----删除前所在页面 || 删完了本页的最后一页---->回到页面的前一页
+        let pageLength = (this.total / this.pageSize) + 1;    //计算删除后还有多少页
+        if(pageLength <= 0) {
+          // 若全部数据都删完了，则直接留在第一页
+          return;
+        }
+        if(this.currentPage > pageLength) {
+          // 如果当前页比删完了页数大，则回到上一页
+          this.projectList(this.currentPage - 1);
+        } else {
+          // 如果当前页比删完了页数小或者等于，则留在本页
+          this.projectList(this.currentPage);
+        }
       }
     },
   },
