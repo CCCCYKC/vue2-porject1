@@ -26,8 +26,9 @@ export default {
     };
   },
   methods: {
-    changeMenu() {      // 切换菜单折叠状态
-      this.isCollapse = !this.isCollapse; 
+    changeMenu() {
+      // 切换菜单折叠状态
+      this.isCollapse = !this.isCollapse;
     },
   },
 };
@@ -43,8 +44,9 @@ export default {
     top: 0;
     bottom: 0;
   }
-  .content {    // 右侧内容区域宽度
-    padding-left: 200px;    // 未折叠状态下的左侧内容宽度
+  .content {
+    // 右侧内容区域宽度
+    padding-left: 200px; // 未折叠状态下的左侧内容宽度
   }
   .collapseWidth {
     padding-left: 64px; // 折叠状态下的左侧内容宽度

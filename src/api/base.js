@@ -11,8 +11,14 @@ const base = {
     deleteItemById:'/api/goods/deleteItemById',//删除单个商品
 
     // 产品管理----产品列表----添加产品
-    selectItemCategoryByParentId:'/api/goods/itemCategory/selectItemCategoryByParentId'//商品类目
+    selectItemCategoryByParentId:'/api/goods/itemCategory/selectItemCategoryByParentId',//商品类目
+    uploadImgURL:'/api/upload',  //上传图片
 }
 
+// 单一导出
+export const host = 'http://localhost:7788'
+// 导出图片上传URL地址
+export const uploadImgURL = '/api/upload';
 
+// 全部导出
 export default base
