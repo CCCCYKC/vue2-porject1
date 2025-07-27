@@ -42,7 +42,7 @@
                 <UpLoadImg @getImgUrl="getImgUrl"></UpLoadImg>
               </el-form-item>
               <el-form-item label="商品描述" prop="descs">
-                <WangEditor @getWangEditor="getWangEditor"></WangEditor>
+                <WangEditor @getWangEditor="getWangEditor" :key="editorKey"></WangEditor>
               </el-form-item>
               <el-form-item label="首页轮播推荐" prop="isShow">
                 <el-switch
@@ -63,9 +63,7 @@
                 ></el-switch>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')"
-                  >保存</el-button
-                >
+                <el-button type="primary" @click="submitForm('ruleForm')">保存</el-button>
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
                 <el-button type="info" plain>取消</el-button>
               </el-form-item>
@@ -114,6 +112,7 @@ export default {
         price: [{ required: true, message: "请输入商品价格", trigger: "blur" }],
         num: [{ required: true, message: "请输入商品数量", trigger: "blur" }],
       },
+      editorKey: 'stable-key', // 固定key，避免组件被频繁重建
     };
   },
   methods: {
@@ -138,7 +137,7 @@ export default {
           console.log("添加商品", this.ruleForm);
           // 接口：{title, image, sellPoint, price, cid, category, num, descs}
           let { title, image, sellPoint, price, cid, category, num, descs } = this.ruleForm;
-          console.log("接口数据",{ title, image, sellPoint, price, cid, category, num, descs });
+          console.log("接口数据",{ title, image:JSON.stringify(image), sellPoint, price, cid, category, num, descs });
           // image数组类型 ---> 转换成字符串
           this.insertTbItem({title, image:JSON.stringify(image), sellPoint, price, cid, category, num, descs});
         } else {
@@ -151,9 +150,9 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    // 添加商品请求-----------------
+    // 点击保存按钮-----触发---->添加商品请求-----------------
     async insertTbItem(params) {
-      let res = await this.$api.insertTbItem({ params });
+      let res = await this.$api.insertTbItem( params );
       console.log("添加商品请求----", res.data);
       if(res.data.status === 200) {
         this.$message({

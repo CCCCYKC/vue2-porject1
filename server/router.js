@@ -336,6 +336,7 @@ router.post('/batchUpload', upload.single('file'), function (req, res, next) {
   var descs = req.query.descs || "";
   var paramsInfo = req.query.paramsInfo || "";
   var image = req.query.image || "";
+  console.log('title---',req.query.title)
 
   const sql = "insert into project(title, image, sellPoint, price, cid, category, num, descs, paramsInfo) values (?,?,?,?,?,?,?,?,?)"
   var arr = [title, image, sellPoint, price, cid, category, num, descs, paramsInfo];

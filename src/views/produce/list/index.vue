@@ -22,29 +22,78 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit" size="small" icon="el-icon-search">查询</el-button>
-            <el-button type="success" @click="onRestore" size="small" icon="el-icon-refresh-right">复原</el-button>
+            <el-button
+              type="primary"
+              @click="onSubmit"
+              size="small"
+              icon="el-icon-search"
+              >查询</el-button
+            >
+            <el-button
+              type="success"
+              @click="onRestore"
+              size="small"
+              icon="el-icon-refresh-right"
+              >复原</el-button
+            >
           </el-form-item>
         </el-form>
       </div>
       <!-- 添加删除 -->
       <div class="btn">
-        <el-button type="warning" size="small" icon="el-icon-plus" @click="toAddProduct">添加商品</el-button>
-        <el-button type="danger" size="small" icon="el-icon-delete" @click="toDelProduct">批量删除</el-button>
+        <el-button
+          type="warning"
+          size="small"
+          icon="el-icon-plus"
+          @click="toAddProduct"
+          >添加商品</el-button
+        >
+        <el-button
+          type="danger"
+          size="small"
+          icon="el-icon-delete"
+          @click="toDelProduct"
+          >批量删除</el-button
+        >
       </div>
     </div>
     <!-- 2.产品列表 -->
     <div class="content">
       <!-- 表格 -->
-      <el-table :data="tableData" style="width: 100%" border header-cell-class-name="table-header">
-        <el-table-column type="selection" width="55" align="center" ></el-table-column>
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        border
+        header-cell-class-name="table-header"
+      >
+        <el-table-column
+          type="selection"
+          width="55"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="id" label="商品编号" width="120" align="center">
         </el-table-column>
-        <el-table-column prop="title" label="商品名称" width="120" align="center" show-overflow-tooltip>
+        <el-table-column
+          prop="title"
+          label="商品名称"
+          width="120"
+          align="center"
+          show-overflow-tooltip
+        >
         </el-table-column>
-        <el-table-column prop="price" label="商品价格" width="120" align="center">
+        <el-table-column
+          prop="price"
+          label="商品价格"
+          width="120"
+          align="center"
+        >
         </el-table-column>
-        <el-table-column prop="category" label="商品类目" width="120" align="center">
+        <el-table-column
+          prop="category"
+          label="商品类目"
+          width="120"
+          align="center"
+        >
         </el-table-column>
         <!-- 时间格式化处理 -->
         <el-table-column label="添加时间" width="200" align="center">
@@ -52,7 +101,12 @@
             {{ moment(scope.row.create_time).format("YYYY-MM-DD HH:mm:ss") }}
           </template>
         </el-table-column>
-        <el-table-column prop="sellPoint" label="商品卖点" align="center" show-overflow-tooltip>
+        <el-table-column
+          prop="sellPoint"
+          label="商品卖点"
+          align="center"
+          show-overflow-tooltip
+        >
         </el-table-column>
         <el-table-column label="商品描述" align="center" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -96,7 +150,7 @@
 <script>
 import Pagination from "@/components/pagination/pagination.vue";
 import moment from "moment";
-import { removeHTMLTag } from '@/views/utils/common.js'
+import { removeHTMLTag } from "@/views/utils/common.js";
 export default {
   name: "productListPage",
   components: {
@@ -111,7 +165,7 @@ export default {
       tableData: [],
       pageSize: 8,
       total: 0, // 假设总条数为100
-      currentPage: 1,//默认当前页面
+      currentPage: 1, //默认当前页面
     };
   },
   methods: {
@@ -124,21 +178,19 @@ export default {
       this.$router.push("/produce/addProduct");
     },
     // 批量删除按钮
-    toDelProduct() {
-
-    },
+    toDelProduct() {},
     // 查询按钮----------------
     onSubmit() {
-      console.log("submit!",this.formInline.name);
+      console.log("submit!", this.formInline.name);
       this.search(this.formInline.name);
     },
     // 复原按钮------------------
     onRestore() {
       // 让表单置空
-      this.formInline.name = '';
-      this.formInline.date = '';
+      this.formInline.name = "";
+      this.formInline.date = "";
       //回到分页第一页
-      this.projectList(1);    
+      this.projectList(1);
     },
     // 编辑按钮
     handleEdit(index, row) {
@@ -146,19 +198,21 @@ export default {
     },
     // 删除单个数据按钮------------
     handleDelete(index, row) {
-      console.log('删除单个数据操作----', index, row);
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+      console.log("删除单个数据操作----", index, row);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
           // 删除该数据----请求后台接口----同步数据库--------
           this.deleteItemById(row.id);
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
+            type: "info",
+            message: "已取消删除",
+          });
         });
     },
     // 分页传过来的页码----分页组件emit----接受子组件传递的数据重新渲染表格数据---------
@@ -176,44 +230,39 @@ export default {
       this.total = res.data.total;
     },
     // 搜索接口请求----------
-    async search (search) {
-      if(!search) {
+    async search(search) {
+      if (!search) {
         return;
       }
       let res = await this.$api.search({ search });
-      console.log('搜索数据----', res.data);
-      if(res.data.status === 200) {   //有结果
+      console.log("搜索数据----", res.data);
+      if (res.data.status === 200) {
+        //有结果
         this.tableData = res.data.result;
         // 处理结果的分页
         this.total = res.data.result.length;
-      } else {    //无结果
+      } else {
+        //无结果
         this.tableData = [];
         this.total = 0;
       }
     },
     // 删除单个数据请求-----------
-    async deleteItemById (id) {
+    async deleteItemById(id) {
       let res = await this.$api.deleteItemById({ id });
-      console.log('删除单个数据请求----',res.data);
+      console.log("删除单个数据请求----", res.data);
       // 删除成功弹窗
-      if(res.data.status === 200) {
+      if (res.data.status === 200) {
         this.$message({
-          type: 'success',
-          message: '删除成功!'
+          type: "success",
+          message: "删除成功!",
         });
         // 重新渲染视图----删除前所在页面 || 删完了本页的最后一页---->回到页面的前一页
-        let pageLength = (this.total / this.pageSize) + 1;    //计算删除后还有多少页
-        if(pageLength <= 0) {
-          // 若全部数据都删完了，则直接留在第一页
-          return;
-        }
-        if(this.currentPage > pageLength) {
-          // 如果当前页比删完了页数大，则回到上一页
-          this.projectList(this.currentPage - 1);
-        } else {
-          // 如果当前页比删完了页数小或者等于，则留在本页
-          this.projectList(this.currentPage);
-        }
+        const newTotal = this.total - 1; // 删除后总条数减1
+        const totalPages = newTotal > 0 ? Math.ceil(newTotal / this.pageSize) : 1; // 总页数=向上取整(新总数/页大小)
+        // 若当前页大于总页数，跳转到最后一页（否则停留在当前页）
+        const targetPage = this.currentPage > totalPages ? totalPages : this.currentPage;
+        this.projectList(targetPage); // 重新加载目标页数据
       }
     },
   },
