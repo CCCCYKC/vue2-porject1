@@ -112,7 +112,6 @@ export default {
         price: [{ required: true, message: "请输入商品价格", trigger: "blur" }],
         num: [{ required: true, message: "请输入商品数量", trigger: "blur" }],
       },
-      editorKey: 'stable-key', // 固定key，避免组件被频繁重建
     };
   },
   methods: {

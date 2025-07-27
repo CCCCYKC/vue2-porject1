@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       editor: null,
+      editorContent: "", //初始内容
       html: "",
       toolbarConfig: {
         // 菜单工具栏配置
@@ -59,6 +60,15 @@ export default {
     // WangEditor自己创建的生命周期函数-------------
     onCreated(editor) {
       this.editor = Object.seal(editor); // 一定要用 Object.seal() ，否则会报错
+
+      // // 1. 密封编辑器实例
+      // this.editor = Object.seal(editor);
+      // // 2. 延迟设置内容，确保 DOM 已就绪
+      // this.$nextTick(() => {
+      //   if (this.editorContent) {
+      //     this.editor.setHtml(this.editorContent); // 用编辑器 API 设置内容，而非直接操作 DOM
+      //   }
+      // });
     },
     // onChange(editor) {
     //   // 用编辑器内容更新 html，避免 v-model 同步问题
@@ -75,24 +85,20 @@ export default {
   },
   // 销毁编译器-------------
   beforeDestroy() {
-    // const editor = this.editor;
-    // if (editor == null) return;
-    // // 新增：检查编辑器是否有效，避免操作已销毁的实例
-    // // 关键修改：v5 用 destroyed 属性判断是否已销毁
+    const editor = this.editor;
+    if (editor == null) return;
+    editor.destroy(); // 组件销毁时，及时销毁编辑器
+
     // if (this.editor && !this.editor.destroyed) {
-    //   // 检查实例是否有效且未销毁
-    //   this.editor.destroy(); // 销毁编辑器
-    //   this.editor = null; // 清空引用，避免内存泄漏
+    //   // 1. 先移除编辑器根节点（避免 Vue 先销毁 DOM 导致冲突）
+    //   const rootElem = this.editor.root; // 获取编辑器根 DOM 节点
+    //   if (rootElem && rootElem.parentNode) {
+    //     rootElem.parentNode.removeChild(rootElem); // 手动移除节点
+    //   }
+    //   // 2. 再销毁实例
+    //   this.editor.destroy();
+    //   this.editor = null;
     // }
-    
-    if (this.editor && !this.editor.destroyed) {
-    // 检查编辑器根节点是否仍存在于文档中
-    const editorRoot = this.editor.root; // 获取编辑器根DOM节点
-    if (editorRoot && document.contains(editorRoot)) {
-      this.editor.destroy(); // 仅当节点存在时销毁
-    }
-    this.editor = null;
-  }
   },
 };
 </script>

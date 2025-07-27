@@ -141,6 +141,7 @@
           :pageSize="pageSize"
           :total="total"
           @pageChanged="pageChanged"
+          :currentPage="currentPage"
         ></Pagination>
       </div>
     </div>
@@ -166,6 +167,7 @@ export default {
       pageSize: 8,
       total: 0, // 假设总条数为100
       currentPage: 1, //默认当前页面
+      lastSearch: "", //上次的搜索关键词
     };
   },
   methods: {
@@ -219,7 +221,14 @@ export default {
     pageChanged(page) {
       console.log("当前页:", page);
       this.currentPage = page;
-      this.projectList(page); // 调用获取产品列表数据的方法
+      // 判断是否有搜索关键词（如果搜索框有值，说明处于搜索状态）
+      if (this.formInline.name) {
+        // 重新执行搜索，会自动根据最新的currentPage切割数据
+        this.search(this.formInline.name);
+      } else {
+        // 非搜索状态，加载普通列表
+        this.projectList(page); // 调用获取产品列表数据的方法
+      }
     },
     // 获取产品列表数据----------
     async projectList(page) {
@@ -228,23 +237,33 @@ export default {
       this.tableData = res.data.data;
       this.pageSize = res.data.pageSize || 8; // 设置每页显示的条数
       this.total = res.data.total;
+      this.currentPage = page || 1;
     },
     // 搜索接口请求----------
     async search(search) {
       if (!search) {
+        // 搜索关键词为空时，直接不搜索，返回
         return;
+      } else if (this.lastSearch !== search) {
+        // 当搜索值与上次搜索值不同时，强制重置当前页为1，并更新lastSearch
+        this.currentPage = 1;
+        this.lastSearch = search;
       }
       let res = await this.$api.search({ search });
       console.log("搜索数据----", res.data);
       if (res.data.status === 200) {
-        //有结果
-        this.tableData = res.data.result;
         // 处理结果的分页
         this.total = res.data.result.length;
+        // 第一页显示1-8条记录，第二页显示9-16条记录....
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        // 有结果，只展示当前页的数据
+        this.tableData = res.data.result.slice(startIndex, endIndex);
       } else {
         //无结果
         this.tableData = [];
         this.total = 0;
+        this.currentPage = 1;
       }
     },
     // 删除单个数据请求-----------
@@ -259,9 +278,11 @@ export default {
         });
         // 重新渲染视图----删除前所在页面 || 删完了本页的最后一页---->回到页面的前一页
         const newTotal = this.total - 1; // 删除后总条数减1
-        const totalPages = newTotal > 0 ? Math.ceil(newTotal / this.pageSize) : 1; // 总页数=向上取整(新总数/页大小)
+        const totalPages =
+          newTotal > 0 ? Math.ceil(newTotal / this.pageSize) : 1; // 总页数=向上取整(新总数/页大小)
         // 若当前页大于总页数，跳转到最后一页（否则停留在当前页）
-        const targetPage = this.currentPage > totalPages ? totalPages : this.currentPage;
+        const targetPage =
+          this.currentPage > totalPages ? totalPages : this.currentPage;
         this.projectList(targetPage); // 重新加载目标页数据
       }
     },

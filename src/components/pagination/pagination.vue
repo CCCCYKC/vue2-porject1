@@ -2,7 +2,7 @@
   <!--
     分页组件 
     layout: "total, sizes, prev, pager, next, jumper" 布局
-    可传递参数:pageSize, total 
+    可传递参数:pageSize, total ,currentPage
   -->
   <el-pagination
     @size-change="handleSizeChange"
@@ -21,11 +21,16 @@ export default {
   props: {
     pageSize: {
       type: Number,
-      default: 10,
+      default: 8,
     },
     total: {
       type: Number,
       default: 100,
+    },
+    currentPage: {
+      // 父组件传递给分页组件当前页面，默认为1
+      type: Number,
+      default: 1,
     },
   },
   methods: {
@@ -35,12 +40,12 @@ export default {
     // 处理页码变化(传递给父组件用$emit)
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.$emit('pageChanged', val);
+      this.$emit("pageChanged", val);
     },
   },
   data() {
     return {
-      currentPage: 1,
+      // currentPage: 1,
     };
   },
 };
