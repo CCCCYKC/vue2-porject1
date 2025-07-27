@@ -1,3 +1,4 @@
+<!-- list/index.vue的添加商品按钮通向的界面 -->
 <template>
   <div class="addproject">
     <el-row :gutter="20">
@@ -22,26 +23,26 @@
               label-width="100px"
               class="ruleForm"
             >
-              <el-form-item label="所属分类" prop="category">
+              <el-form-item label="所属分类" prop="category" size="small">
                 {{ this.ruleForm.category }}
               </el-form-item>
-              <el-form-item label="商品名称" prop="title">
+              <el-form-item label="商品名称" prop="title" size="small">
                 <el-input v-model="ruleForm.title"></el-input>
               </el-form-item>
-              <el-form-item label="商品价格" prop="price">
+              <el-form-item label="商品价格" prop="price" size="small">
                 <el-input v-model="ruleForm.price"></el-input>
               </el-form-item>
-              <el-form-item label="商品数量" prop="num">
+              <el-form-item label="商品数量" prop="num" size="small">
                 <el-input v-model="ruleForm.num"></el-input>
               </el-form-item>
-              <el-form-item label="商品卖点" prop="sellPoint">
+              <el-form-item label="商品卖点" prop="sellPoint" size="small">
                 <el-input v-model="ruleForm.sellPoint"></el-input>
               </el-form-item>
               <el-form-item label="上传图片" prop="image">
                 <UpLoadImg @getImgUrl="getImgUrl"></UpLoadImg>
               </el-form-item>
               <el-form-item label="商品描述" prop="descs">
-                <el-input type="textarea" v-model="ruleForm.descs"></el-input>
+                <WangEditor @getWangEditor="getWangEditor"></WangEditor>
               </el-form-item>
               <el-form-item label="首页轮播推荐" prop="isShow">
                 <el-switch
@@ -79,11 +80,13 @@
 <script>
 import TreeProduct from "./treeProduct.vue";
 import UpLoadImg from "./upload.vue";
+import WangEditor from "./wangEditor.vue";
 export default {
   name: "addProductPage",
   components: {
     TreeProduct,
     UpLoadImg,
+    WangEditor,
   },
   data() {
     return {
@@ -114,19 +117,30 @@ export default {
     };
   },
   methods: {
-    // 接受树形组件treeProduct传回来的节点名称，并放在表单数据ruleForm里面---------
+    // 接受树形组件treeProduct传回来的节点名称，并放在表单数据ruleForm.category里面---------
     getCategory(data) {
       this.ruleForm.category = data.name;
+      this.ruleForm.cid = data.cid;
     },
-    // 接受上传图片组件UpLoadImg传回来的数据，并放在表单数据ruleForm里面--------
+    // 接受上传图片组件UpLoadImg传回来的数据，并放在表单数据ruleForm.image里面--------
     getImgUrl(url) {
       this.ruleForm.image.push(url);
     },
+    // 接受富文本编译器组件WangEditor传回来的数据，并放在表单数据ruleForm.descs里面--------
+    getWangEditor(val) {
+      this.ruleForm.descs = val;
+    },
     // 表单的保存按钮
     submitForm(formName) {
+      // this.%refs.ruleForm 和 this.$refs[formName] 的表述是一样的
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          console.log("添加商品", this.ruleForm);
+          // 接口：{title, image, sellPoint, price, cid, category, num, descs}
+          let { title, image, sellPoint, price, cid, category, num, descs } = this.ruleForm;
+          console.log("接口数据",{ title, image, sellPoint, price, cid, category, num, descs });
+          // image数组类型 ---> 转换成字符串
+          this.insertTbItem({title, image:JSON.stringify(image), sellPoint, price, cid, category, num, descs});
         } else {
           console.log("error submit!!");
           return false;
@@ -136,6 +150,19 @@ export default {
     // 表单的重置按钮---------------
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    // 添加商品请求-----------------
+    async insertTbItem(params) {
+      let res = await this.$api.insertTbItem({ params });
+      console.log("添加商品请求----", res.data);
+      if(res.data.status === 200) {
+        this.$message({
+          message: '恭喜你，商品添加成功',
+          type: 'success'
+        });
+        // 跳转路由
+        this.$router.push('/produce/list');
+      }
     },
   },
 };
@@ -160,7 +187,8 @@ export default {
 
 .wapper {
   background: white;
-  height: 800px;
+  height: 100%;
+  margin-bottom: 20px;
   .title {
     font-weight: bold;
     font-size: 16px;

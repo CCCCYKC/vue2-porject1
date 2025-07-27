@@ -268,7 +268,8 @@ var storage = multer.diskStorage({
     cb(null, "./upload/");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+    // 用encodeURIComponent将中文乱码转换成UTF-8 编码,可以用decodeURIComponent再解码回中文
+    cb(null, Date.now() + "-" + encodeURIComponent(file.originalname));
   },
 });
 

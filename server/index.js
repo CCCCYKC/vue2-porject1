@@ -7,7 +7,7 @@ app.use(express.urlencoded({ extended: true }))
 const cors = require('cors')
 app.use(cors())
 
-//静态文件托管 ---- 
+//静态文件托管，图片保存在upload目录下 ---- 
 app.use(express.static('upload'))
 
 //路由--产品

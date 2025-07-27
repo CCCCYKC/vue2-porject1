@@ -1,3 +1,4 @@
+<!-- addProduct.vue的树形组件 -->
 <template>
   <div class="tree">
     <!--

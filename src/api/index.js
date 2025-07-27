@@ -22,8 +22,7 @@ const api = {
     projectList(params) {
         return axios.get(base.projectList, { params })
     },
-    // 搜索产品名称
-    // params = { search:xx }
+    // 搜索产品名称     params = { search:xx }
     search(params) {
         return axios.get(base.search, { params })
     },
@@ -33,11 +32,14 @@ const api = {
     },
 
     // 产品管理----产品列表----添加产品
-    // 商品类目获取
-    // parmas = {type:cid}
+    // 商品类目获取     parmas = {type:cid}
     selectItemCategoryByParentId(params) {
         return axios.get(base.selectItemCategoryByParentId, { params })
-    }
+    },
+    // 添加商品  params = {title, image, sellPoint, price, cid, category, num, descs, paramsInfo}
+    insertTbItem(params) {
+        return axios.get(base.insertTbItem, {params})
+    },
 };
 
 export default api;

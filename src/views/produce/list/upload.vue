@@ -1,4 +1,4 @@
-<!-- 上传图片组件 -->
+<!-- addProduct.vue的上传图片组件 -->
 <template>
   <!-- 
         upload 上传图片
