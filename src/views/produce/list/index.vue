@@ -167,7 +167,9 @@ export default {
       pageSize: 8,
       total: 0, // 假设总条数为100
       currentPage: 1, //默认当前页面
-      lastSearch: "", //上次的搜索关键词
+      searchWord: "", //搜索关键词
+      lastSearchWord: "", //上次的搜索关键词
+      isSearch: false,//是否处于搜索状态
     };
   },
   methods: {
@@ -184,6 +186,7 @@ export default {
     // 查询按钮----------------
     onSubmit() {
       console.log("submit!", this.formInline.name);
+      this.searchWord = this.formInline.name;
       this.search(this.formInline.name);
     },
     // 复原按钮------------------
@@ -191,6 +194,8 @@ export default {
       // 让表单置空
       this.formInline.name = "";
       this.formInline.date = "";
+      this.lastSearchWord = "";
+      this.isSearch = false;
       //回到分页第一页
       this.projectList(1);
     },
@@ -221,10 +226,10 @@ export default {
     pageChanged(page) {
       console.log("当前页:", page);
       this.currentPage = page;
-      // 判断是否有搜索关键词（如果搜索框有值，说明处于搜索状态）
-      if (this.formInline.name) {
+      // 如果处于搜索状态----根据上次submit的searchWord来搜索-----搜索新的 || 旧数据分页(根据)
+      if (this.isSearch) {
         // 重新执行搜索，会自动根据最新的currentPage切割数据
-        this.search(this.formInline.name);
+        this.search(this.searchWord);
       } else {
         // 非搜索状态，加载普通列表
         this.projectList(page); // 调用获取产品列表数据的方法
@@ -242,13 +247,16 @@ export default {
     // 搜索接口请求----------
     async search(search) {
       if (!search) {
-        // 搜索关键词为空时，直接不搜索，返回
+        // 搜索关键词为空时，直接不搜索，搜索状态为false,返回
+        this.isSearch = false;
         return;
-      } else if (this.lastSearch !== search) {
-        // 当搜索值与上次搜索值不同时，强制重置当前页为1，并更新lastSearch
+      } else if (this.lastSearchWord !== search) {
+        // 当搜索值与上次搜索值不同时，强制重置当前页为1，并更新lastSearchWord
         this.currentPage = 1;
-        this.lastSearch = search;
+        this.lastSearchWord = search;
       }
+      // 处于搜索状态
+      this.isSearch = true;
       let res = await this.$api.search({ search });
       console.log("搜索数据----", res.data);
       if (res.data.status === 200) {

@@ -39,10 +39,10 @@
                 <el-input v-model="ruleForm.sellPoint"></el-input>
               </el-form-item>
               <el-form-item label="上传图片" prop="image">
-                <UpLoadImg @getImgUrl="getImgUrl"></UpLoadImg>
+                <UpLoadImg @getImgUrl="getImgUrl" ref="upLoad"></UpLoadImg>
               </el-form-item>
               <el-form-item label="商品描述" prop="descs">
-                <WangEditor @getWangEditor="getWangEditor" :key="editorKey"></WangEditor>
+                <WangEditor @getWangEditor="getWangEditor" :key="editorKey" ref="wangEditor"></WangEditor>
               </el-form-item>
               <el-form-item label="首页轮播推荐" prop="isShow">
                 <el-switch
@@ -147,7 +147,13 @@ export default {
     },
     // 表单的重置按钮---------------
     resetForm(formName) {
+      // 重置表单内容
       this.$refs[formName].resetFields();
+      // 重置图片上传
+      this.$refs.upLoad.clearUploadFiles();
+      // 重置wangEditor
+      this.$refs.wangEditor.editor.clear(); //方法二：调用wangEditor自己的方法
+      // this.$refs.wangEditor.html ='';       //方法一：设置子组件的变量为空
     },
     // 点击保存按钮-----触发---->添加商品请求-----------------
     async insertTbItem(params) {

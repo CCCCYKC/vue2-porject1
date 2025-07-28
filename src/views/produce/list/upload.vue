@@ -9,11 +9,16 @@
             on-remove	文件列表移除文件时的钩子	function(file, fileList)	
             on-success	文件上传成功时的钩子	function(response, file, fileList)	
             on-error	文件上传失败时的钩子	function(err, file, fileList)
+            file-list	上传的文件列表, 例如: [{name: 'food.jpg', url: 'https://xxx.cdn.com/xxx.jpg'}]	array
+            disabled	是否禁用	boolean	—	false
+            limit	最大允许上传个数	number	
+            on-exceed	文件超出个数限制时的钩子	function(files, fileList)
 
         dialog 查看图片的弹窗组件
     -->
   <div class="upload">
     <el-upload
+      ref="upload"
       :action="this.uploadImgURL"
       list-type="picture-card"
       :on-preview="handlePictureCardPreview"
@@ -51,6 +56,10 @@ export default {
       console.log("imgUrl", imgUrl);
       // 将数据传递给父组件并存储起来
       this.$emit("getImgUrl", imgUrl);
+    },
+    // 清除全部图片
+    clearUploadFiles() {
+      this.$refs.upload.clearFiles(); // 调用 clearFiles 方法清空文件列表
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
