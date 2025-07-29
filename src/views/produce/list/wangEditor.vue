@@ -27,7 +27,7 @@ export default {
     return {
       editor: null,
       editorContent: "", //初始内容
-      html: "",
+      html: "", // 编辑器内容
       toolbarConfig: {
         // 菜单工具栏配置
         toolbarKeys: [
@@ -60,7 +60,6 @@ export default {
     // WangEditor自己创建的生命周期函数-------------
     onCreated(editor) {
       this.editor = Object.seal(editor); // 一定要用 Object.seal() ，否则会报错
-
       // // 1. 密封编辑器实例
       // this.editor = Object.seal(editor);
       // // 2. 延迟设置内容，确保 DOM 已就绪
@@ -70,12 +69,6 @@ export default {
       //   }
       // });
     },
-    // onChange(editor) {
-    //   // 用编辑器内容更新 html，避免 v-model 同步问题
-    //   this.html = editor.getHtml();
-    //   console.log("实时监听改变----", this.html);
-    //   this.$emit("getWangEditor", this.html);
-    // },
     onBlur() {
       // ！！！！但是用onChange也有问题！！！！多次修改的话会突然报错
       console.log("失去焦点时----", this.html);

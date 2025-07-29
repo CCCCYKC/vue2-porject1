@@ -52,7 +52,7 @@
           type="danger"
           size="small"
           icon="el-icon-delete"
-          @click="toDelProduct"
+          @click="deleteAll"
           >批量删除</el-button
         >
       </div>
@@ -60,11 +60,17 @@
     <!-- 2.产品列表 -->
     <div class="content">
       <!-- 表格 -->
+      <!-- 方法：
+          select	当用户手动勾选数据行的 Checkbox 时触发的事件	selection, row
+          select-all	当用户手动勾选全选 Checkbox 时触发的事件	selection
+       -->
       <el-table
         :data="tableData"
         style="width: 100%"
         border
         header-cell-class-name="table-header"
+        @select="handleSelect"
+        @select-all="handleSelect"
       >
         <el-table-column
           type="selection"
@@ -73,13 +79,11 @@
         ></el-table-column>
         <el-table-column prop="id" label="商品编号" width="120" align="center">
         </el-table-column>
-        <el-table-column
-          prop="title"
-          label="商品名称"
-          width="120"
-          align="center"
-          show-overflow-tooltip
-        >
+        <el-table-column prop="title" label="商品名称" width="120" align="center" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <!-- 商品名称:高亮、可点击进入详情页 -->
+            <span style="color: #0077c8; cursor: pointer;" @click="handleLook(scope.$index, scope.row)">{{ scope.row.title }}</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="price"
@@ -152,6 +156,7 @@
 import Pagination from "@/components/pagination/pagination.vue";
 import moment from "moment";
 import { removeHTMLTag } from "@/views/utils/common.js";
+import { mapMutations } from "vuex";
 export default {
   name: "productListPage",
   components: {
@@ -169,7 +174,8 @@ export default {
       currentPage: 1, //默认当前页面
       searchWord: "", //搜索关键词
       lastSearchWord: "", //上次的搜索关键词
-      isSearch: false,//是否处于搜索状态
+      isSearch: false, //是否处于搜索状态
+      ids: [], // 用于存储批量删除的商品ID
     };
   },
   methods: {
@@ -177,12 +183,63 @@ export default {
     moment,
     // 声明HTML标签处理方法
     removeHTMLTag,
+    ...mapMutations('product',['changeRowData', 'changeTitle']), // Vuex方法：修改行数据
+    // 批量删除按钮------------
+    deleteAll() {
+      // 传递的ids必须是字符串而非数组
+      let idStr = this.ids.join(",");
+      // 提示框：是否删除
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          // 请求批量删除后台接口
+          this.$api.batchDelete({ ids: idStr })
+            .then((res) => {
+              console.log("批量删除商品请求----", res.data);
+              if (res.data.status === 200) {
+                this.$message({
+                  type: "success",
+                  message: "批量删除成功!",
+                });
+                // 重新渲染视图----删除前所在页面 || 删完了本页的最后一页---->回到页面的前一页
+                const newTotal = this.total - this.ids.length; // 删除后的总记录=前总条数-ids.length
+                const totalPages = newTotal > 0 ? Math.ceil(newTotal / this.pageSize) : 1; // 总页数=向上取整(新总数/页大小)
+                // 若当前页大于总页数，跳转到最后一页（否则停留在当前页）
+                const targetPage = this.currentPage > totalPages ? totalPages : this.currentPage;
+                this.projectList(targetPage); // 重新加载目标页数据
+              }
+            })
+            .catch((error) => {
+              console.error("批量删除失败:", error);
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    // 处理表格选择框选中的数据-----------
+    handleSelect(selection) {
+      console.log("选中的数据:", selection);
+      // 获取所有选中的数据的id
+      let arr = [];
+      selection.forEach((item) => {
+        arr.push(item.id);
+      });
+      console.log("批量删除的商品ID:", arr);
+      this.ids = arr; // 将选中的ID存储到ids数组中
+    },
     // 跳转到添加产品页面-----------
     toAddProduct() {
+      // 更改vuex中的title数据
+      this.changeTitle("添加产品");
       this.$router.push("/produce/addProduct");
     },
-    // 批量删除按钮
-    toDelProduct() {},
     // 查询按钮----------------
     onSubmit() {
       console.log("submit!", this.formInline.name);
@@ -199,9 +256,26 @@ export default {
       //回到分页第一页
       this.projectList(1);
     },
-    // 编辑按钮
+    // 查看商品详情按钮--------------
+    handleLook(index, row) {
+      //目的：只有取消按钮，没有保存和重置按钮 用v-show="title != '产品详情'"控制
+      console.log("查看单个数据详情操作----", index, row);
+      // 存储当前行的数据vuex---跳转到另一界面---获取vuex行数据
+      this.changeRowData(row);
+      // 更改vuex中的title数据
+      this.changeTitle("产品详情");
+      // 跳转到添加产品页面
+      this.$router.push("/produce/addProduct");
+    },
+    // 编辑单个数据按钮--------------
     handleEdit(index, row) {
-      console.log(index, row);
+      console.log("编辑单个数据操作----", index, row);
+      // 存储当前行的数据vuex---跳转到另一界面---获取vuex行数据
+      this.changeRowData(row);
+      // 更改vuex中的title数据
+      this.changeTitle("编辑产品");
+      // 跳转到添加产品页面
+      this.$router.push("/produce/addProduct");
     },
     // 删除单个数据按钮------------
     handleDelete(index, row) {

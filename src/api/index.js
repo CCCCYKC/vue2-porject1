@@ -30,6 +30,10 @@ const api = {
     deleteItemById(params) {
         return axios.get(base.deleteItemById, { params })
     },
+    // 批量删除商品 params = { ids: item.id }
+    batchDelete(params) {
+        return axios.get(base.batchDelete, { params })
+    },
 
     // 产品管理----产品列表----添加产品
     // 商品类目获取     parmas = {type:cid}
@@ -39,6 +43,10 @@ const api = {
     // 添加商品  params = {title, image, sellPoint, price, cid, category, num, descs, paramsInfo}
     insertTbItem(params) {
         return axios.get(base.insertTbItem, {params})
+    },
+    // 编辑商品  params = {id, title, image, sellPoint, price, cid, category, num, descs, paramsInfo}
+    updateTbItem(params) {
+        return axios.get(base.updateTbItem, { params })
     },
 };
 

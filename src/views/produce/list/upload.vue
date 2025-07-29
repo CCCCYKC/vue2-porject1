@@ -24,6 +24,7 @@
       :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
       :on-success="handleSuccess"
+      :file-list="fileList"
       multiple
     >
       <i class="el-icon-plus"></i>
@@ -39,6 +40,15 @@
 import { uploadImgURL, host } from "@/api/base.js";
 export default {
   name: "upLoadComponent",
+  props: {
+    // 父组件传递过来的上传图片的地址
+    fileList: {
+      type: Array,
+      default: function () {
+        return [];
+      },
+    },
+  },
   data() {
     return {
       uploadImgURL,
