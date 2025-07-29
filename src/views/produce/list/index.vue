@@ -401,4 +401,8 @@ export default {
     padding: 5px;
   }
 }
+// 解决el-message组件的z-index问题，避免被顶部导航遮挡
+::v-deep .el-message {
+  z-index: 10000 !important; /* 比顶部导航的 10000 大即可 */
+}
 </style>

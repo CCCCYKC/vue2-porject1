@@ -48,6 +48,12 @@ const api = {
     updateTbItem(params) {
         return axios.get(base.updateTbItem, { params })
     },
+
+    // 产品管理----产品分类
+    // 获取商品分类
+    itemCategory() {
+        return axios.get(base.itemCategory)
+    },
 };
 
 export default api;

@@ -118,13 +118,13 @@
         >
         <div slot="header" class="title">快捷入口</div>
         <div class="content" style="display: flex">
-          <el-button type="primary" plain icon="el-icon-folder-add">
+          <el-button type="primary" plain icon="el-icon-folder-add" @click="$router.push('/produce/addProduct')">
             添加商品
           </el-button>
-          <el-button type="success" plain icon="el-icon-data-line">
+          <el-button type="success" plain icon="el-icon-data-line" @click="$router.push('/produce/category')">
             产品分类
           </el-button>
-          <el-button type="info" plain icon="el-icon-notebook-2">
+          <el-button type="info" plain icon="el-icon-notebook-2" @click="$router.push('/order/list')">
             订单列表
           </el-button>
         </div>

@@ -16,6 +16,9 @@ const base = {
     uploadImgURL:'/api/upload',  //上传图片
     insertTbItem:'/api/goods/item/insertTbItem',//添加商品
     updateTbItem:'/api/goods/item/updateTbItem',//编辑商品
+
+    // 产品分类
+    itemCategory:'/api/itemCategory',//获取商品分类
 }
 
 // 单一导出

@@ -60,7 +60,7 @@ export default {
 <style lang="less" scoped>
 // 顶部样式
 .header {
-  z-index: 10000;
+  z-index: 1000;
   position: sticky;
   top: 0;
   height: 50px;

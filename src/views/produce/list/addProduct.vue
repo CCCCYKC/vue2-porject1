@@ -27,7 +27,7 @@
                 {{ this.ruleForm.category }}
               </el-form-item>
               <el-form-item label="商品名称" prop="title" size="small">
-                <el-input v-model="ruleForm.title" disabled></el-input>
+                <el-input v-model="ruleForm.title"></el-input>
               </el-form-item>
               <el-form-item label="商品价格" prop="price" size="small">
                 <el-input v-model="ruleForm.price"></el-input>
@@ -158,7 +158,7 @@ export default {
         }
       });
     },
-    // 表单的重置按钮----->重置为空 || 重置成编辑前已保存的值
+    // 表单的重置按钮----->重置为空 || 重置成编辑前已保存的值---------
     resetForm(formName) {
       if(this.title === "添加产品") {
         // 重置表单内容
@@ -282,5 +282,9 @@ export default {
   .ruleForm {
     padding: 20px;
   }
+}
+// 解决el-message组件的z-index问题，避免被顶部导航遮挡
+::v-deep .el-message {
+  z-index: 10001 !important; /* 比顶部导航的 10000 大即可 */
 }
 </style>
