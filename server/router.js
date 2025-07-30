@@ -15,6 +15,7 @@ const vipLogin = require("./login/data/vip_login.json");
 const adminLogin = require("./login/data/admin_login.json");
 const adminPermission = require("./login/data/admin_permission.json");
 const vipPermission = require("./login/data/vip_permission.json");
+const { error } = require("console");
 
 /* 
   登录：

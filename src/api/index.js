@@ -42,7 +42,7 @@ const api = {
     },
     // 添加商品  params = {title, image, sellPoint, price, cid, category, num, descs, paramsInfo}
     insertTbItem(params) {
-        return axios.get(base.insertTbItem, {params})
+        return axios.get(base.insertTbItem, { params })
     },
     // 编辑商品  params = {id, title, image, sellPoint, price, cid, category, num, descs, paramsInfo}
     updateTbItem(params) {
@@ -54,6 +54,22 @@ const api = {
     itemCategory() {
         return axios.get(base.itemCategory)
     },
+    // 添加一级商品分类 params = {name}
+    insertCategory(params) {
+        return axios.get(base.insertCategory, { params })
+    },
+    // 添加二级商品分类 params = {cid, name}
+    insertItemCategory(params) {
+        return axios.get(base.insertItemCategory, { params })
+    },
+    // 修改商品分类 params = {id, name}
+    updateCategory(params) {
+        return axios.get(base.updateCategory, { params })
+    },
+    // 删除商品分类 id
+    deleteContentCategoryById(params) {
+        return axios.get(base.deleteContentCategoryById, { params })
+    }
 };
 
 export default api;
