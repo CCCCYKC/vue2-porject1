@@ -23,6 +23,14 @@ const base = {
     insertItemCategory: '/api/itemCategory/insertItemCategory',//添加二级商品分类
     updateCategory:'/api/itemCategory/updateCategory',//修改商品分类
     deleteContentCategoryById:'/api/content/deleteContentCategoryById',//删除商品分类
+
+    // 订单列表
+    list:'/api/order/list',//订单列表数据获取
+    changeStatus:'/api/order/changeStatus',//订单汇总按钮
+
+    // 订单汇总
+    collect: '/api/order/collect', //订单汇总列表数据获取
+    cancel:'/api/order/cancel', //撤销汇总
 }
 
 // 单一导出

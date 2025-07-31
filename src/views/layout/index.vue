@@ -29,6 +29,8 @@ export default {
     changeMenu() {
       // 切换菜单折叠状态
       this.isCollapse = !this.isCollapse;
+      // 同步仓库
+      this.$store.commit("changeCollapse", this.isCollapse);
     },
   },
 };

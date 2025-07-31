@@ -6,8 +6,15 @@ import createPersistedstate from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 const store = new Store({
-  state: {},     // 数据状态
-  mutations: {}, // 同步修改状态
+  state: {  // 数据状态
+    isCollapse: false, // 是否折叠侧边栏(默认不折叠)
+  },
+  mutations: {  // 同步修改状态
+    // 同步修改isCollapse状态
+    changeCollapse(state,bool) {
+      state.isCollapse = bool; // 修改侧边栏折叠状态
+    }
+  },
   actions: {},   // 异步操作
   modules: {
     product,      // 产品模块

@@ -38,7 +38,7 @@ export default {
     };
   },
   methods: {
-    // 提交按钮
+    // 提交按钮----------
     submitHandle() {
       // 新建 + 修改
       console.log("提交input", this.input);
@@ -64,13 +64,13 @@ export default {
         });
       }
     },
-    // 取消按钮
+    // 取消按钮-----------
     cancelHandle() {
       console.log("取消操作");
       this.dialogVisible = false; // 关闭弹窗
       this.input = ""; // 清空输入框内容
     },
-    // 点击弹窗上面的关闭按钮
+    // 点击弹窗上面的关闭按钮----------
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then(() => {
@@ -80,7 +80,7 @@ export default {
         })
         .catch(() => {});
     },
-    // 新增一级类目 name
+    // 新增一级类目 name------------
     async insertCategory(params) {
       let res = await this.$api.insertCategory(params);
       console.log("新增一级类目返回结果", res.data);
@@ -97,7 +97,7 @@ export default {
         this.$message.error("新增一级类目失败");
       }
     },
-    // 新增二级类目 name cid
+    // 新增二级类目 name cid------------
     async insertItemCategory(params) {
       let res = await this.$api.insertItemCategory(params);
       console.log("新增二级类目返回结果", res.data);
@@ -114,7 +114,7 @@ export default {
         this.$message.error("新增二级类目失败");
       }
     },
-    // 修改类目 name id
+    // 修改类目 name id------------
     async updateCategory(params) {
       let res = await this.$api.updateCategory(params);
       console.log("修改类目返回结果", res.data);

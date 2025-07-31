@@ -69,7 +69,28 @@ const api = {
     // 删除商品分类 id
     deleteContentCategoryById(params) {
         return axios.get(base.deleteContentCategoryById, { params })
-    }
+    },
+
+    // 订单管理----订单列表
+    // 获取订单列表数据 params = { page }
+    list(params) {
+        return axios.get(base.list, { params })
+    },
+    // 订单汇总按钮 params = { ids: '1,2,3' } ids为字符串
+    changeStatus(params) {
+        return axios.get(base.changeStatus, { params })
+    },
+
+
+    // 订单管理----订单汇总
+    // 获取订单汇总列表数据 params = { page: xx }
+    collect(params) {
+        return axios.get(base.collect, { params })
+    },
+    // 撤销汇总 params = { id: xx } id为汇总单的id
+    cancel(params) {
+        return axios.get(base.cancel, { params })
+    },
 };
 
 export default api;

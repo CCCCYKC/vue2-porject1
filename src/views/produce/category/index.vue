@@ -1,11 +1,12 @@
 <template>
   <div class="category">
+    <!-- 标题 -->
     <div class="title">产品类目管理</div>
+    <!-- 按钮 -->
     <div class="btn">
-      <el-button type="warning" icon="el-icon-plus" @click="append"
-        >新增一级导航类目</el-button
-      >
+      <el-button type="warning" icon="el-icon-plus" @click="append">新增一级导航类目</el-button>
     </div>
+    <!-- 树形结构类目 -->
     <div class="tree">
       <!-- Tree
             data: 数据源
@@ -41,7 +42,6 @@
 
 <script>
 import Dialog from "./dialog.vue";
-// let id = 1000;
 export default {
   name: "produceCategoryPage",
   components: {
@@ -73,7 +73,7 @@ export default {
     };
   },
   methods: {
-    // 新增一级导航类目按钮
+    // 新增一级导航类目按钮--------
     append(data) {
       // console.log("新增类目---", data);
       // 显示弹窗
@@ -86,7 +86,7 @@ export default {
         this.info.name = data.name;
       }
     },
-    // 修改类目节点内容按钮
+    // 修改类目节点内容按钮-----------
     update(node) {
       console.log("修改类目", node);
       // 显示弹窗
@@ -99,7 +99,7 @@ export default {
       this.info.id = node.id; // 类目id
       this.info.name = node.name; // 类目名称
     },
-    // 删除类目节点按钮
+    // 删除类目节点按钮----------
     remove(node,data) {
       console.log("删除类目",node,data);
       this.$confirm("确认删除该类目吗？")
@@ -111,7 +111,7 @@ export default {
           this.$message.info("取消删除操作");
         });
     },
-    // 整个树的结构模式  树节点的内容区的渲染Function	Function(h, { node, data, store }
+    // 整个树的结构模式  树节点的内容区的渲染Function	Function(h, { node, data, store }-------
     renderContent(h, { node, data }) {
       //   console.log("renderContent", node, data);
       return (
@@ -167,7 +167,7 @@ export default {
         </span>
       );
     },
-    // 获取tree商品分类数据
+    // 获取tree商品分类数据-----------
     async itemCategory() {
       let res = await this.$api.itemCategory();
       console.log("商品分类数据-----", res.data.result);
@@ -197,7 +197,7 @@ export default {
       this.treeData = oneArr;
       console.log("处理后的商品分类数据-----", this.treeData);
     },
-    // 删除类目请求
+    // 删除类目请求-----------
     async deleteContentCategoryById(params) {
       console.log("删除类目请求参数", params);
       let res = await this.$api.deleteContentCategoryById(params);

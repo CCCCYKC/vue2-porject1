@@ -34,7 +34,7 @@ router.get("/list", (req, res) => {
   });
 });
 
-//2. 订单汇总接口---修改汇总状态id 字符串离散数字  ids
+//2. 订单汇总接口---修改汇总状态id 字符串离散数字  ids='1,2,3'  (前端传递过来)
 /* 
     批量汇总  id标识  
     sql =`delete from project where id in (101,102,103)`;
