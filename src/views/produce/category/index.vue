@@ -1,5 +1,7 @@
 <template>
   <div class="category">
+    <!-- 面包屑导航 -->
+     <BreadcrumbNav></BreadcrumbNav>
     <!-- 标题 -->
     <div class="title">产品类目管理</div>
     <!-- 按钮 -->
@@ -223,12 +225,13 @@ export default {
 <style lang="less" scoped>
 .category {
   background: #fff;
-  padding: 20px;
+  padding: 10px 20px 0 20px;
   .title {
     background: #f5f5f5;
     font-size: 20px;
     padding: 15px;
     margin-bottom: 20px;
+    margin-top: 5px;
   }
   .btn {
     margin-bottom: 20px;

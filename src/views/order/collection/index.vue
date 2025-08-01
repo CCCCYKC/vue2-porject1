@@ -1,5 +1,7 @@
 <template>
   <div class="colltion">
+    <!-- 面包屑导航 -->
+    <BreadcrumbNav></BreadcrumbNav>
     <!-- 头部 -->
     <div class="header">
       <!-- 表单+查询 -->
@@ -91,17 +93,30 @@
             仅对 type=selection 的列有效,类型为 Function,返回值用来决定这一行的 CheckBox 是否可以勾选	
             Function(row, index) -->
         <el-table-column type="selection" align="center"> </el-table-column>
-        <el-table-column prop="orderNum" label="汇总单编号" align="center" width="180" show-overflow-tooltip>
+        <el-table-column
+          prop="orderNum"
+          label="汇总单编号"
+          align="center"
+          width="180"
+          show-overflow-tooltip
+        >
           <template slot-scope="scope">
             <!-- 商品名称:高亮、可点击进入详情页 -->
-            <span style="color: #0077c8; cursor: pointer">{{ scope.row.orderNum }}</span>
+            <span style="color: #0077c8; cursor: pointer">{{
+              scope.row.orderNum
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="operator" label="汇总人" align="center">
         </el-table-column>
         <el-table-column prop="phone" label="联系电话" align="center">
         </el-table-column>
-        <el-table-column prop="time" label="汇总时间" align="center" width="200">
+        <el-table-column
+          prop="time"
+          label="汇总时间"
+          align="center"
+          width="200"
+        >
           <template slot-scope="scope">
             {{ moment(scope.row.time).format("YYYY-MM-DD HH:mm:ss") }}
           </template>
@@ -154,12 +169,13 @@ export default {
       pageSize: 8, // 每页显示条数
       total: 10, // 默认总条数
       currentPage: 1, // 默认当前页码
-      json_fields: {//导出Excel的每列名称
-        "汇总单编号": "orderNum",
-        "汇总人": "operator",
-        "联系电话": "phone",
-        "汇总时间": "time",
-        "汇总单总价格": "totalPrice",
+      json_fields: {
+        //导出Excel的每列名称
+        汇总单编号: "orderNum",
+        汇总人: "operator",
+        联系电话: "phone",
+        汇总时间: "time",
+        汇总单总价格: "totalPrice",
       },
     };
   },
@@ -200,7 +216,7 @@ export default {
       let res = await this.$api.collect(params);
       console.log("订单汇总列表数据：", res.data);
       let arr = res.data.data;
-      arr.forEach(item => {
+      arr.forEach((item) => {
         item.time = moment(item.time).format("YYYY-MM-DD HH:mm:ss");
       });
       //  赋值表格数据
@@ -230,18 +246,17 @@ export default {
 
 <style lang="less" scoped>
 .colltion {
-  background: #fff;
-  padding: 10px 20px 0 20px;
   .header {
     background: #fff;
+    padding-bottom: 10px;
     .top {
       display: flex;
       flex-direction: row;
       .form {
-        padding-left: 10px;
+        padding: 8px 10px 5px 15px;
         width: 900px;
         .el-form-item {
-          margin-bottom: 3px;
+          margin-bottom: 2px;
           margin-right: 15px;
         }
       }
@@ -253,12 +268,16 @@ export default {
     }
     .btn {
       border: #eee solid 1px;
-      padding: 8px;
-      margin-bottom: 10px;
+      padding: 6px 8px 6px 8px;
+      margin: 0 15px 0 15px;
       .el-button {
         width: 100px;
       }
     }
+  }
+  .table{
+    background: #fff;
+    padding: 0 15px 0 15px;
   }
 }
 </style>

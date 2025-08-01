@@ -1,5 +1,7 @@
 <template>
   <div class="list" ref="list">
+    <!-- 面包屑导航 -->
+     <BreadcrumbNav></BreadcrumbNav>
     <!-- 头部 -->
     <div class="header">
       <!-- 表单+查询 -->
@@ -285,18 +287,17 @@ export default {
 
 <style lang="less" scoped>
 .list {
-  background: #fff;
-  padding: 10px 20px 0 20px;
   .header {
     background: #fff;
+    padding-bottom: 10px;
     .top {
       display: flex;
       flex-direction: row;
       .form {
-        padding-left: 10px;
+        padding: 8px 10px 5px 10px;
         width: 900px;
         .el-form-item {
-          margin-bottom: 3px;
+          margin-bottom: 2px;
           margin-right: 15px;
         }
       }
@@ -308,8 +309,8 @@ export default {
     }
     .btn {
       border: #eee solid 1px;
-      padding: 8px;
-      margin-bottom: 10px;
+      padding: 6px 8px 6px 8px;
+      margin: 0 15px 0 15px;
       display: flex;
       flex-direction: row;
       .el-button {
@@ -317,6 +318,10 @@ export default {
         margin-left: 20px;
       }
     }
+  }
+  .table{
+    background: #fff;
+    padding: 0 15px 0 15px;
   }
 }
 </style>

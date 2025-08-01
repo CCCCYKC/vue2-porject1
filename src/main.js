@@ -6,14 +6,8 @@ import './plugins/element.js'
 import 'normalize.css'
 import '@/assets/css/base.css'
 import api from '@/api/index.js' 
-
-// echarts 全局引用
-// import * as echarts from 'echarts';
-// Vue.prototype.$echarts = echarts
-
-// 引入vue导出Excel插件
-import JsonExcel from 'vue-json-excel'
-Vue.component('downloadExcel', JsonExcel)
+// 引入全局组件定义文件
+import './views/utils/commonComponents.js';
 
 Vue.prototype.$api = api
 Vue.config.productionTip = false

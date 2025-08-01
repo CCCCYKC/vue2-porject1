@@ -1,14 +1,14 @@
 <template>
-    <div class="list">
+    <div class="manage">
         <!-- 面包屑导航 -->
          <BreadcrumbNav></BreadcrumbNav>
-         <h2>广告列表界面</h2>
+         <h2>系统管理界面</h2>
     </div>
 </template>
 
 <script>
 export default {    
-    name: 'advertListPage'
+    name: 'managePage'
 }
 </script>
 

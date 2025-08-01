@@ -96,14 +96,13 @@ export default {
   }
 }
 .content {
-  padding-top: 15px;
   padding-right: 20px;
   padding-left: 20px;
   background: #f5f5f5;
   flex:1 ;
   // height: 638px;
   /* 关键修改：铺满剩余屏幕高度并支持滚动 */
-  min-height: calc(100vh - 65px); /* 100vh是屏幕高度，减去顶部导航栏的50px + padding-top的15px高度 */
+  min-height: calc(100vh - 50px); /* 100vh是屏幕高度，减去顶部导航栏的50px + padding-top的15px高度 */
   height: 100%;
   overflow: auto; /* 内容超出时显示滚动条 */
 }

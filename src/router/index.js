@@ -18,39 +18,58 @@ const OrderExamine = () => import("@/views/order/examine/index.vue");
 const Advert = () => import("@/views/advert/index.vue");
 const AdvertList = () => import("@/views/advert/list/index.vue");
 
+const Manage = () => import("@/views/manage/index.vue");
+
 Vue.use(VueRouter);
 
 const routes = [
     {
         path: "/",
         component: Layout,
+        meta: {
+            title: '首页'
+        },
         children: [
             {
                 path: "/",      // 首页
                 name: "home",
-                component: Home
+                component: Home,
+                meta: {
+                    title: '首页'
+                }
             },
             {
                 path: "/produce",       // 产品管理
                 name: "produce",
+                redirect:"/produce/list",   //重定向(由于二级菜单为空，让面包屑导航可以跳转)
                 component: Produce,
+                meta: {
+                    title: '产品管理'
+                },
                 children: [
                     {
                         path: "list",       //产品列表 访问路径：/produce/list
                         name: "produceList",
-                        component: ProduceList
+                        component: ProduceList,
+                        meta: {
+                            title: '产品列表'
+                        },
                     },
                     {
                         path: "category",    //产品分类 访问路径：/produce/category
                         name: "produceCategory",
-                        component: ProduceCategory
+                        component: ProduceCategory,
+                        meta: {
+                            title: '产品分类'
+                        },
                     },
                     {
                         path: "addProduct",    //添加产品 访问路径：/produce/addProduct
                         name: "addProduct",
                         component: AddProduct,
                         meta: {
-                            activeMenu: "/produce/list"  // 设置侧边栏激活菜单
+                            activeMenu: "/produce/list",  // 设置侧边栏激活菜单
+                            title: '产品详情'
                         }
                     }
                 ]
@@ -58,36 +77,64 @@ const routes = [
             {
                 path: "/order",     // 订单管理
                 name: "order",
+                redirect:"/order/list",
                 component: Order,
+                meta: {
+                    title: '订单管理'
+                },
                 children: [
                     {
                         path: "list",       //订单列表 访问路径：/order/list
                         name: "orderList",
-                        component: OrderList
+                        component: OrderList,
+                        meta: {
+                            title: '订单列表'
+                        },
                     },
                     {
                         path: "collection",     //订单汇总 访问路径：/order/collection
                         name: "orderCollection",
-                        component: OrderCollection
+                        component: OrderCollection,
+                        meta: {
+                            title: '订单汇总'
+                        },
                     },
                     {
                         path: "examine",       //订单审核 访问路径：/order/examine
                         name: "orderExamine",
-                        component: OrderExamine
+                        component: OrderExamine,
+                        meta: {
+                            title: '订单审核'
+                        },
                     }
                 ]
             },
             {
                 path: "/advert",    // 广告管理
                 name: "advert",
+                redirect:"/advert/list",
                 component: Advert,
+                meta: {
+                    title: '广告管理'
+                },
                 children: [
                     {
                         path: "list",     //广告列表 访问路径：/advert/list
                         name: "advertList",
-                        component: AdvertList
+                        component: AdvertList,
+                        meta: {
+                            title: '广告列表'
+                        },
                     }
                 ]
+            },
+            {
+                path: "/manage",    // 系统管理
+                name: "manage",
+                component: Manage,
+                meta: {
+                    title: '系统管理'
+                },
             }
         ]
     },

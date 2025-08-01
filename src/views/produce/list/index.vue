@@ -1,6 +1,8 @@
 <!-- 产品管理 -- 产品列表 -->
 <template>
   <div class="listPage">
+    <!-- 面包屑导航 -->
+     <BreadcrumbNav></BreadcrumbNav>   
     <!-- 1.产品搜索 -->
     <div class="header">
       <!-- 表单 -->
@@ -378,7 +380,7 @@ export default {
 <style lang="less" scoped>
 .header {
   background: #fff;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   .form {
     padding-top: 5px;
     padding-left: 10px;

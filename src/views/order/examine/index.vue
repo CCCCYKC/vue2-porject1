@@ -1,5 +1,9 @@
 <template>
-    <h2>订单审核界面</h2>
+    <div class="examine">
+        <!-- 面包屑导航 -->
+         <BreadcrumbNav></BreadcrumbNav>
+         <h2>订单审核界面</h2>
+    </div>
 </template>
 
 <script>

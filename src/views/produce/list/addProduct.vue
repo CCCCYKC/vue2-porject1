@@ -1,6 +1,9 @@
 <!-- list/index.vue的添加商品按钮通向的界面 -->
 <template>
   <div class="addproject">
+    <!-- 面包屑导航 -->
+    <BreadcrumbNav></BreadcrumbNav>
+    <!-- 下方内容 -->
     <el-row :gutter="20">
       <el-col :span="4">
         <!-- 左侧树形类目 -->
@@ -39,7 +42,11 @@
                 <el-input v-model="ruleForm.sellPoint"></el-input>
               </el-form-item>
               <el-form-item label="上传图片" prop="image">
-                <UpLoadImg @getImgUrl="getImgUrl" ref="upLoad" :fileList="fileList"></UpLoadImg>
+                <UpLoadImg
+                  @getImgUrl="getImgUrl"
+                  ref="upLoad"
+                  :fileList="fileList"
+                ></UpLoadImg>
               </el-form-item>
               <el-form-item label="商品描述" prop="descs">
                 <WangEditor
@@ -67,9 +74,20 @@
                 ></el-switch>
               </el-form-item>
               <el-form-item>
-                <el-button v-show="title != '产品详情'" type="primary" @click="submitForm('ruleForm')">保存</el-button>
-                <el-button v-show="title != '产品详情'" @click="resetForm('ruleForm')">重置</el-button>
-                <el-button type="info" plain @click="cancelForm('ruleForm')">取消</el-button>
+                <el-button
+                  v-show="title != '产品详情'"
+                  type="primary"
+                  @click="submitForm('ruleForm')"
+                  >保存</el-button
+                >
+                <el-button
+                  v-show="title != '产品详情'"
+                  @click="resetForm('ruleForm')"
+                  >重置</el-button
+                >
+                <el-button type="info" plain @click="cancelForm('ruleForm')"
+                  >取消</el-button
+                >
               </el-form-item>
             </el-form>
           </div>
@@ -96,7 +114,7 @@ export default {
       fileList: [], // 图片列表
       ruleForm: {
         //表单数据
-        id:"", // 商品ID 编辑时用到
+        id: "", // 商品ID 编辑时用到
         category: "",
         title: "",
         price: "",
@@ -141,16 +159,54 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 接口：{title, image, sellPoint, price, cid, category, num, descs}
-          let {id, title, image, sellPoint, price, cid, category, num, descs } = this.ruleForm;
-          if(this.title === "添加产品") {
+          let {
+            id,
+            title,
+            image,
+            sellPoint,
+            price,
+            cid,
+            category,
+            num,
+            descs,
+          } = this.ruleForm;
+          if (this.title === "添加产品") {
             // console.log("添加商品----", this.ruleForm);
-            console.log("添加产品接口数据----", {title,image: JSON.stringify(image),sellPoint,price,cid,category,num,descs,});
+            console.log("添加产品接口数据----", {
+              title,
+              image: JSON.stringify(image),
+              sellPoint,
+              price,
+              cid,
+              category,
+              num,
+              descs,
+            });
             // image数组类型 ---> 转换成字符串
-            this.insertTbItem({title,image: JSON.stringify(image),sellPoint,price,cid,category,num,descs,});
+            this.insertTbItem({
+              title,
+              image: JSON.stringify(image),
+              sellPoint,
+              price,
+              cid,
+              category,
+              num,
+              descs,
+            });
           } else {
             // 编辑商品
             // console.log("编辑商品----", this.ruleForm);
-            this.updateTbItem({id,title,image: JSON.stringify(image),sellPoint,price,cid,category,num,descs,});
+            this.updateTbItem({
+              id,
+              title,
+              image: JSON.stringify(image),
+              sellPoint,
+              price,
+              cid,
+              category,
+              num,
+              descs,
+            });
           }
         } else {
           console.log("error submit!!");
@@ -160,7 +216,7 @@ export default {
     },
     // 表单的重置按钮----->重置为空 || 重置成编辑前已保存的值---------
     resetForm(formName) {
-      if(this.title === "添加产品") {
+      if (this.title === "添加产品") {
         // 重置表单内容
         this.$refs[formName].resetFields();
         // 重置图片上传
@@ -172,14 +228,14 @@ export default {
         // 编辑产品时，重置成编辑前已保存的值
         // console.log("编辑界面--this.ruleForm",this.ruleForm);
         // console.log("编辑界面--this.rowData",this.rowData);
-        this.ruleForm = {...this.rowData}; // 使用解构语法，创建一个新的对象，避免直接引用 浅拷贝
+        this.ruleForm = { ...this.rowData }; // 使用解构语法，创建一个新的对象，避免直接引用 浅拷贝
         this.ruleForm.isShow = true;
         // 重新渲染wangEditor 用获取实例的方法ref--------------
         this.$nextTick(() => {
           this.$refs.wangEditor.html = this.rowData.descs; // 设置编辑器内容
         });
         // 重新渲染图片展示---------------
-        let arr = JSON.parse(this.rowData.image);   // 将字符串转换成数组
+        let arr = JSON.parse(this.rowData.image); // 将字符串转换成数组
         this.ruleForm.image = arr; // 更新ruleForm的image,保证this.ruleForm.image为数组
         this.fileList = []; // 清空fileList,否则会一直累加图片
         arr.forEach((item) => {
@@ -197,10 +253,10 @@ export default {
       let res = await this.$api.insertTbItem(params);
       console.log("添加商品请求----", res.data);
       if (res.data.status === 200) {
-        console.log('进入添加商品成功分支，准备显示提示'); // 新增此行日志
+        console.log("进入添加商品成功分支，准备显示提示"); // 新增此行日志
         this.$message({
-          message: '恭喜你，添加商品成功',
-          type: 'success'
+          message: "恭喜你，添加商品成功",
+          type: "success",
         });
         // 跳转路由
         this.$router.push("/produce/list");
@@ -211,15 +267,15 @@ export default {
       let res = await this.$api.updateTbItem(params);
       console.log("编辑商品请求----", res.data);
       if (res.data.status === 200) {
-        console.log('进入修改商品成功分支，准备显示提示'); // 新增此行日志
+        console.log("进入修改商品成功分支，准备显示提示"); // 新增此行日志
         this.$message({
-          message: '恭喜你，修改商品成功',
-          type: 'success'
+          message: "恭喜你，修改商品成功",
+          type: "success",
         });
         // 跳转路由
         this.$router.push("/produce/list");
       }
-    }
+    },
   },
   computed: {
     // 计算属性
@@ -230,10 +286,10 @@ export default {
     if (this.title === "编辑产品" || this.title === "产品详情") {
       // 若直接赋值this.ruleForm = this.rowData; 会导致ruleForm和rowData指向同一内存地址，修改ruleForm会影响rowData
       // 这里使用解构语法，创建一个新的对象，避免直接引用
-      this.ruleForm = {...this.rowData};
+      this.ruleForm = { ...this.rowData };
       this.ruleForm.isShow = true;
       // 重新渲染图片展示---------------
-      let arr = JSON.parse(this.rowData.image);   // 将字符串转换成数组
+      let arr = JSON.parse(this.rowData.image); // 将字符串转换成数组
       // console.log("编辑界面--图片数组", arr);
       this.ruleForm.image = arr; // 更新ruleForm的image,保证this.ruleForm.image为数组
       arr.forEach((item) => {
