@@ -80,6 +80,10 @@ const api = {
     changeStatus(params) {
         return axios.get(base.changeStatus, { params })
     },
+    // 获取订单详情     假数据，不用传参
+    detail() {
+        return axios.get(base.detail)
+    },
 
 
     // 订单管理----订单汇总

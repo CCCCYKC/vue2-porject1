@@ -73,10 +73,17 @@
 
       <!-- 汇总导出按钮 -->
       <div class="btn">
-        <el-button type="warning" size="small" @click="handleCollect"
-          >订单汇总</el-button
+        <el-button type="warning" size="small" @click="handleCollect">订单汇总</el-button>
+        <!-- 导出 -->
+        <download-excel
+          class="export-excel-wrapper"
+          :data="tableData"
+          :fields="json_fields"
+          header="xxx公司采购系统订单列表"
+          name="订单列表.xls"
         >
-        <el-button type="warning" size="small">导出</el-button>
+          <el-button type="warning" size="small">导出</el-button>
+        </download-excel>
       </div>
     </div>
 
@@ -90,7 +97,7 @@
         <el-table-column
           type="selection"
           align="center"
-          :selectable="(row) => (row.huizongStatus === 1 ? true : false)"
+          :selectable="(row) => (row.huizongStatus === '未汇总' ? true : false)"
         >
         </el-table-column>
         <el-table-column
@@ -115,22 +122,11 @@
         </el-table-column>
         <el-table-column prop="phone" label="联系电话" align="center">
         </el-table-column>
-        <el-table-column
-          prop="yudingTime"
-          label="预定时间"
-          align="center"
-          width="200"
-        >
-          <template slot-scope="scope">
-            {{ moment(scope.row.yudingTime).format("YYYY-MM-DD HH:mm:ss") }}
-          </template>
+        <el-table-column prop="yudingTime" label="预定时间" align="center" width="200">
         </el-table-column>
         <el-table-column prop="price" label="订单总价格" align="center">
         </el-table-column>
         <el-table-column prop="huizongStatus" label="汇总状态" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.huizongStatus === 1 ? "未汇总" : "已汇总" }}
-          </template>
         </el-table-column>
       </el-table>
       <!-- 分页 -->
@@ -160,8 +156,7 @@ export default {
   },
   data() {
     return {
-      ruleForm: {
-        //表单的数据
+      ruleForm: { //表单的数据
         name: "",
         date1: "",
         date2: "",
@@ -174,8 +169,7 @@ export default {
       total: 10, // 默认总条数
       currentPage: 1, // 默认当前页码
       ids: [], // 用于存储选中订单的ID
-      drawerData: {
-        // 用于存储抽屉组件的数据
+      drawerData: { // 用于存储抽屉组件的数据
         code: "", // 订单编号
         ordername: "", // 下单人姓名
         company: "", // 所属单位
@@ -183,6 +177,15 @@ export default {
         yudingTime: "", // 预定时间
         price: "", // 订单总价格
         huizongStatus: "", // 汇总状态
+      },
+      json_fields: {//导出Excel的每列名称
+        "订单编号": "code",
+        "下单人": "ordername",
+        "所属单位": "company",
+        "联系电话": "phone",
+        "预定时间": "yudingTime",
+        "订单总价格": "price",
+        "汇总状态": "huizongStatus",
       },
     };
   },
@@ -243,10 +246,18 @@ export default {
     async list(params) {
       let res = await this.$api.list(params);
       console.log("订单列表数据：", res.data);
-      //  赋值表格数据
-      this.tableData = res.data.data;
-      this.total = res.data.total; // 更新总条数
-      this.pageSize = res.data.pageSize; // 更新每页条数
+      if (res.data.status === 200) {
+        let arr = res.data.data;
+        // 转换时间格式和汇总状态格式
+        arr.forEach(item => {
+          item.huizongStatus = item.huizongStatus === 1 ? "未汇总" : "已汇总";
+          item.yudingTime = moment(item.yudingTime).format("YYYY-MM-DD HH:mm:ss");
+        });
+        //  赋值表格数据
+        this.tableData = arr;
+        this.total = res.data.total; // 更新总条数
+        this.pageSize = res.data.pageSize; // 更新每页条数
+      }
     },
     // 提交汇总数据-----参数为ids字符串-----------
     async changeStatus(params) {
@@ -275,18 +286,17 @@ export default {
 <style lang="less" scoped>
 .list {
   background: #fff;
-  padding: 20px;
+  padding: 10px 20px 0 20px;
   .header {
     background: #fff;
     .top {
       display: flex;
       flex-direction: row;
       .form {
-        padding-top: 5px;
         padding-left: 10px;
         width: 900px;
         .el-form-item {
-          margin-bottom: 10px;
+          margin-bottom: 3px;
           margin-right: 15px;
         }
       }
@@ -298,10 +308,13 @@ export default {
     }
     .btn {
       border: #eee solid 1px;
-      padding: 10px;
-      margin-bottom: 20px;
+      padding: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: row;
       .el-button {
         width: 100px;
+        margin-left: 20px;
       }
     }
   }

@@ -384,7 +384,7 @@ export default {
     padding-left: 10px;
     border-bottom: #f3f4f7 solid 1px;
     .el-form-item {
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
   }
   .btn {
@@ -396,9 +396,6 @@ export default {
   background: #fff;
   ::v-deep .table-header {
     color: black;
-  }
-  .pagination {
-    padding: 5px;
   }
 }
 // 解决el-message组件的z-index问题，避免被顶部导航遮挡

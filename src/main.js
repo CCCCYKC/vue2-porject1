@@ -11,6 +11,10 @@ import api from '@/api/index.js'
 // import * as echarts from 'echarts';
 // Vue.prototype.$echarts = echarts
 
+// 引入vue导出Excel插件
+import JsonExcel from 'vue-json-excel'
+Vue.component('downloadExcel', JsonExcel)
+
 Vue.prototype.$api = api
 Vue.config.productionTip = false
 

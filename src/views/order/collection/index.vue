@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="colltion">
     <!-- 头部 -->
     <div class="header">
       <!-- 表单+查询 -->
@@ -72,7 +72,15 @@
 
       <!-- 导出按钮 -->
       <div class="btn">
-        <el-button type="warning" size="small">导出</el-button>
+        <download-excel
+          class="export-excel-wrapper"
+          :data="tableData"
+          :fields="json_fields"
+          header="xxx公司采购系统订单汇总列表"
+          name="订单汇总列表.xls"
+        >
+          <el-button type="warning" size="small">导出</el-button>
+        </download-excel>
       </div>
     </div>
 
@@ -83,24 +91,17 @@
             仅对 type=selection 的列有效,类型为 Function,返回值用来决定这一行的 CheckBox 是否可以勾选	
             Function(row, index) -->
         <el-table-column type="selection" align="center"> </el-table-column>
-        <el-table-column
-          prop="orderNum"
-          label="汇总单编号"
-          align="center"
-          width="180"
-          show-overflow-tooltip
-        >
+        <el-table-column prop="orderNum" label="汇总单编号" align="center" width="180" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <!-- 商品名称:高亮、可点击进入详情页 -->
+            <span style="color: #0077c8; cursor: pointer">{{ scope.row.orderNum }}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="operator" label="汇总人" align="center">
         </el-table-column>
         <el-table-column prop="phone" label="联系电话" align="center">
         </el-table-column>
-        <el-table-column
-          prop="time"
-          label="汇总时间"
-          align="center"
-          width="200"
-        >
+        <el-table-column prop="time" label="汇总时间" align="center" width="200">
           <template slot-scope="scope">
             {{ moment(scope.row.time).format("YYYY-MM-DD HH:mm:ss") }}
           </template>
@@ -153,6 +154,13 @@ export default {
       pageSize: 8, // 每页显示条数
       total: 10, // 默认总条数
       currentPage: 1, // 默认当前页码
+      json_fields: {//导出Excel的每列名称
+        "汇总单编号": "orderNum",
+        "汇总人": "operator",
+        "联系电话": "phone",
+        "汇总时间": "time",
+        "汇总单总价格": "totalPrice",
+      },
     };
   },
   methods: {
@@ -191,8 +199,12 @@ export default {
     async collect(params) {
       let res = await this.$api.collect(params);
       console.log("订单汇总列表数据：", res.data);
+      let arr = res.data.data;
+      arr.forEach(item => {
+        item.time = moment(item.time).format("YYYY-MM-DD HH:mm:ss");
+      });
       //  赋值表格数据
-      this.tableData = res.data.data;
+      this.tableData = arr;
       this.total = res.data.total; // 更新总条数
       this.pageSize = res.data.pageSize; // 更新每页条数
     },
@@ -217,20 +229,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.list {
+.colltion {
   background: #fff;
-  padding: 20px;
+  padding: 10px 20px 0 20px;
   .header {
     background: #fff;
     .top {
       display: flex;
       flex-direction: row;
       .form {
-        padding-top: 5px;
         padding-left: 10px;
         width: 900px;
         .el-form-item {
-          margin-bottom: 10px;
+          margin-bottom: 3px;
           margin-right: 15px;
         }
       }
@@ -242,8 +253,8 @@ export default {
     }
     .btn {
       border: #eee solid 1px;
-      padding: 10px;
-      margin-bottom: 20px;
+      padding: 8px;
+      margin-bottom: 10px;
       .el-button {
         width: 100px;
       }

@@ -5,6 +5,7 @@
     可传递参数:pageSize, total ,currentPage
   -->
   <el-pagination
+    class="pagination"
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
     :current-page="currentPage"
@@ -51,5 +52,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+.pagination{
+  padding: 5px;
+}
 </style>

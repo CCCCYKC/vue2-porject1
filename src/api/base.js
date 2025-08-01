@@ -27,6 +27,7 @@ const base = {
     // 订单列表
     list:'/api/order/list',//订单列表数据获取
     changeStatus:'/api/order/changeStatus',//订单汇总按钮
+    detail:'/api/order/list/detail',//订单详情
 
     // 订单汇总
     collect: '/api/order/collect', //订单汇总列表数据获取
