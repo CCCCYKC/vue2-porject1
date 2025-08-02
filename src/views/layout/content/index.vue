@@ -2,20 +2,37 @@
   <div class="right">
     <!-- 顶部 -->
     <div class="header">
+      <!-- 缩进展开图标 -->
       <div class="icon">
-        <!-- 缩进展开图标 -->
-        <i v-if="isCollapse" class="el-icon-caret-right" @click="changeMenu"></i>
+        <i
+          v-if="isCollapse"
+          class="el-icon-caret-right"
+          @click="changeMenu"
+        ></i>
         <i v-else class="el-icon-caret-left" @click="changeMenu"></i>
       </div>
+      <!-- 右侧内容：时间、登录、语言切换 -->
       <div class="rightText">
         <div class="item">{{ currentTime }}</div>
-        <div class="item">{{ "下拉菜单" }}</div>
+        <div class="item">
+          <el-dropdown @command="changeLang">
+            <!-- command	点击菜单项触发的事件回调	dropdown-item 的指令 -->
+            <span class="el-dropdown-link">语言环境<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <!-- command	指令	string/number/object 类似于id,可以根据item的command判断点的是哪个 -->
+              <el-dropdown-item command="zh">中文</el-dropdown-item>
+              <el-dropdown-item command="en">English</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+        <div class="item">{{ "欢迎xxx" }}</div>
         <div class="itemIcon">
           <i class="el-icon-switch-button"></i>
         </div>
       </div>
     </div>
-    <!-- 右侧内容 -->
+    <!-- 下方内容 -->
     <div class="content">
       <router-view></router-view>
     </div>
@@ -45,9 +62,14 @@ export default {
     changeMenu() {
       this.$emit("toggleMenu"); // 触发父组件的事件来切换菜单状态
     },
-    // 顶部时间----每秒更新
+    // 顶部时间--------
     autoTime() {
       this.currentTime = moment(new Date()).format("YYYY-MM-DD HH:mm dddd");
+    },
+    // 点击下拉菜单改变语言-------
+    changeLang(val) {
+      console.log("选择语言-----",val);
+      this.$i18n.locale = val;
     },
   },
   created() {
@@ -86,6 +108,10 @@ export default {
       margin-right: 10px;
       padding-right: 10px;
       border-right: #fff solid 2px;
+      .el-dropdown-link{
+        color: #fff;
+        font-size: 16px;
+      }
     }
     .itemIcon {
       margin-right: 20px;
@@ -99,10 +125,12 @@ export default {
   padding-right: 20px;
   padding-left: 20px;
   background: #f5f5f5;
-  flex:1 ;
+  flex: 1;
   // height: 638px;
   /* 关键修改：铺满剩余屏幕高度并支持滚动 */
-  min-height: calc(100vh - 50px); /* 100vh是屏幕高度，减去顶部导航栏的50px + padding-top的15px高度 */
+  min-height: calc(
+    100vh - 50px
+  ); /* 100vh是屏幕高度，减去顶部导航栏的50px + padding-top的15px高度 */
   height: 100%;
   overflow: auto; /* 内容超出时显示滚动条 */
 }

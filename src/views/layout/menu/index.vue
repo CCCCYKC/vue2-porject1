@@ -10,16 +10,19 @@
       :collapse="isCollapse"
     >
       <el-menu-item>
-        <span slot="title">生鲜后台管理系统</span>
+        <!-- <span slot="title">生鲜后台管理系统</span> -->
+        <span slot="title">{{ $t('menu.homeTitle') }}</span>
       </el-menu-item>
       <el-menu-item index="/">
         <i class="el-icon-menu"></i>
-        <span slot="title">首页</span>
+        <!-- <span slot="title">首页</span> -->
+         <span slot="title">{{ $t('menu.home') }}</span>
       </el-menu-item>
       <el-submenu index="/produce">
         <template slot="title">
           <i class="el-icon-location"></i>
-          <span>产品管理</span>
+          <!-- <span>产品管理</span> -->
+           <span>{{ $t('menu.productTitle') }}</span>
         </template>
         <el-menu-item-group>
           <el-menu-item index="/produce/list">

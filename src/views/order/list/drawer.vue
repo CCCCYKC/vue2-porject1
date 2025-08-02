@@ -77,12 +77,7 @@
         <div class="footerFrom">
           <el-form :inline="true" :model="footerFromData" class="demo-ruleForm">
             <el-form-item label="订单审核通过" prop="pass">
-              <el-switch
-                v-model="footerFromData.pass"
-                active-color="#13ce66"
-                disabled
-              >
-              </el-switch>
+              <el-checkbox v-model="footerFromData.pass" disabled>通过</el-checkbox>
             </el-form-item>
             <el-form-item label="审核人">
               <el-input

@@ -188,6 +188,14 @@ export default {
     ...mapMutations('product',['changeRowData', 'changeTitle']), // Vuex方法：修改行数据
     // 批量删除按钮------------
     deleteAll() {
+      // 当没有选中时
+      if(this.ids.length === 0) {
+        this.$message({
+          message: '必须选择一条记录进行批量删除',
+          type: 'warning'
+        });
+        return;
+      }
       // 传递的ids必须是字符串而非数组
       let idStr = this.ids.join(",");
       // 提示框：是否删除
