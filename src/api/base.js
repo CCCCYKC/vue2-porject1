@@ -1,5 +1,9 @@
 //接口公共地址
 const base = {
+    // 登录界面
+    login:'/api/login',//登录
+    permission:'api/permission',//用户权限
+
     // 首页
     totalInfo: '/api/home/dataCount', //首页统计数据
     orderInfo: '/api/home/orderinfo', //今日订单统计数据

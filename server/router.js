@@ -39,6 +39,7 @@ const { error } = require("console");
 router.post("/login", (req, res) => {
   const username = req.body.user;
   const pwd = req.body.pwd;
+  console.log(username,pwd);
   if (username === 'admin') {//超级管理员
       res.send(adminLogin)
   } else {

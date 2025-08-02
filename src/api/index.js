@@ -3,6 +3,16 @@ import axios from 'axios';
 import base from './base'
 
 const api = {
+    // 登录界面
+    // 登录接口 post params = { user, pwd }
+    login(params) {
+        return axios.post(base.login, params)
+    },
+    // 用户权限  params = { token: '' }
+    permission(params) {
+        return axios.get(base.permission, { params })
+    },
+
     // 首页
     // 获取首页统计数据
     totalInfo() {
