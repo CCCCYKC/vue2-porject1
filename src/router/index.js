@@ -18,7 +18,9 @@ const OrderExamine = () => import("@/views/order/examine/index.vue");
 const Advert = () => import("@/views/advert/index.vue");
 const AdvertList = () => import("@/views/advert/list/index.vue");
 
-const Manage = () => import("@/views/manage/index.vue");
+const Management = () => import("@/views/manage/index.vue");
+const StaffManagement = () => import("@/views/manage/staff/index.vue");
+const DepartmentManagement = () => import("@/views/manage/department/index.vue");
 
 Vue.use(VueRouter);
 
@@ -27,7 +29,8 @@ const routes = [
         path: "/",
         component: Layout,
         meta: {
-            title: '首页'
+            title: '首页',
+            isLogin: true,  //需要登录才能进入
         },
         children: [
             {
@@ -131,10 +134,29 @@ const routes = [
             {
                 path: "/manage",    // 系统管理
                 name: "manage",
-                component: Manage,
+                redirect:"/manage/staff",
+                component: Management,
                 meta: {
                     title: '系统管理'
                 },
+                children:[
+                    {
+                        path: "staff",     //人员管理 访问路径：/manage/staff
+                        name: "staffManagement",
+                        component: StaffManagement,
+                        meta: {
+                            title: '人员管理'
+                        },
+                    },
+                    {
+                        path: "department",     //部门管理 访问路径：/manage/department
+                        name: "departManagement",
+                        component: DepartmentManagement,
+                        meta: {
+                            title: '部门管理'
+                        },
+                    }
+                ]
             }
         ]
     },
@@ -151,5 +173,24 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 });
+
+
+// 配置路由全局前置守卫导航
+import store from "@/store"
+router.beforeEach((to,from,next) => {
+    // 判断进入的路由界面是否需要登录 不需要的则直接进入
+    if(to.matched.some(item => item.meta.isLogin)) {
+        // 需要登录 判断是否已经登录 ==> token值是否存在
+        let token = store._modules.root._children.login.state.userInfo.token;
+        if(token) {
+            next(); //跳转至to路由
+        } else {
+            next('/login'); //跳转至登录页
+        }
+    } else {
+        // 不需要登录
+        next();
+    }
+})
 
 export default router;

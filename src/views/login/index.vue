@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   name: "LoginPage",
   data() {
@@ -38,6 +39,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations("login", ["setUser"]), // Vuex方法：保存用户信息
     // 登录按钮-----------
     handelLogin() {
       // 逻辑：1.获取用户输入的内容 2.请求接口 3. 请求成功---存储登录数据--进入首页
@@ -45,14 +47,23 @@ export default {
         this.$message.error("输入账号密码后才能登录！");
         return;
       } else {
-        this.login(this.input.username, this.input.password);
-        console.log(this.input.username, this.input.password)
+        this.login({
+          user: this.input.username,
+          password: this.input.password,
+        });
       }
     },
     // 登录请求
     async login(params) {
+      console.log("传递给接口的参数：", params);
       let res = await this.$api.login(params);
       console.log("登录请求接口", res.data);
+      if (res.data.status === 200) {
+        // 1.存储登录信息
+        this.setUser({ username: this.input.username, token: res.data.token });
+        // 2.跳转至首页
+        this.$router.push("/");
+      }
     },
   },
 };

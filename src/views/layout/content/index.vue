@@ -17,7 +17,8 @@
         <div class="item">
           <el-dropdown @command="changeLang">
             <!-- command	点击菜单项触发的事件回调	dropdown-item 的指令 -->
-            <span class="el-dropdown-link">语言环境<i class="el-icon-arrow-down el-icon--right"></i>
+            <span class="el-dropdown-link"
+              >语言环境<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <!-- command	指令	string/number/object 类似于id,可以根据item的command判断点的是哪个 -->
@@ -26,9 +27,9 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-        <div class="item">{{ "欢迎xxx" }}</div>
+        <div class="item">{{ "欢迎" + userInfo.username }}</div>
         <div class="itemIcon">
-          <i class="el-icon-switch-button"></i>
+          <i class="el-icon-switch-button" @click="handleLogout"></i>
         </div>
       </div>
     </div>
@@ -41,6 +42,7 @@
 
 <script>
 import moment from "moment";
+import { mapMutations, mapState } from "vuex";
 export default {
   name: "rightContent",
   props: {
@@ -55,9 +57,13 @@ export default {
       };
     },
   },
+  computed: {
+    ...mapState("login", ["userInfo"]), //保存了仓库的用户信息
+  },
   methods: {
     // 声明时间格式化函数----------
     moment,
+    ...mapMutations("login", ["removeUser"]), // Vuex方法：保存用户信息
     // 点击图标传递数据给父组件layout/index.js----------
     changeMenu() {
       this.$emit("toggleMenu"); // 触发父组件的事件来切换菜单状态
@@ -68,8 +74,17 @@ export default {
     },
     // 点击下拉菜单改变语言-------
     changeLang(val) {
-      console.log("选择语言-----",val);
+      console.log("选择语言-----", val);
       this.$i18n.locale = val;
+    },
+    // 退出登录
+    handleLogout() {
+      // 逻辑：1.清除仓库中登录的数据 2.清除浏览器仓库中该账号的数据 3.跳转至登录界面
+      this.removeUser();
+      // 2.清除浏览器仓库中该账号的数据
+      localStorage.removeItem("info");
+      // 3.跳转至登录界面
+      this.$router.push("/login");
     },
   },
   created() {
@@ -108,7 +123,7 @@ export default {
       margin-right: 10px;
       padding-right: 10px;
       border-right: #fff solid 2px;
-      .el-dropdown-link{
+      .el-dropdown-link {
         color: #fff;
         font-size: 16px;
       }

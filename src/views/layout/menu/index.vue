@@ -11,18 +11,18 @@
     >
       <el-menu-item>
         <!-- <span slot="title">生鲜后台管理系统</span> -->
-        <span slot="title">{{ $t('menu.homeTitle') }}</span>
+        <span slot="title">{{ $t("menu.homeTitle") }}</span>
       </el-menu-item>
       <el-menu-item index="/">
         <i class="el-icon-menu"></i>
         <!-- <span slot="title">首页</span> -->
-         <span slot="title">{{ $t('menu.home') }}</span>
+        <span slot="title">{{ $t("menu.home") }}</span>
       </el-menu-item>
       <el-submenu index="/produce">
         <template slot="title">
           <i class="el-icon-location"></i>
           <!-- <span>产品管理</span> -->
-           <span>{{ $t('menu.productTitle') }}</span>
+          <span>{{ $t("menu.productTitle") }}</span>
         </template>
         <el-menu-item-group>
           <el-menu-item index="/produce/list">
@@ -67,10 +67,22 @@
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item index="/manage">
-        <i class="el-icon-setting"></i>
-        <span slot="title">系统管理</span>
-      </el-menu-item>
+      <el-submenu index="/manage">
+        <template slot="title">
+          <i class="el-icon-setting"></i>
+          <span slot="title">系统管理</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/manage/staff">
+            <i class="el-icon-menu"></i>
+            <span slot="title">人员管理</span>
+          </el-menu-item>
+          <el-menu-item index="/manage/department">
+            <i class="el-icon-menu"></i>
+            <span slot="title">部门管理</span>
+          </el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
     </el-menu>
   </div>
 </template>

@@ -17,7 +17,7 @@ const instance = axios.create({
     //发送请求的公共的基础路径接口位置 
     // baseURL: 'http://iwenwiki.com',//配置请求的基础路径
     //如果是打包的项目 请求的接口的基本的网络地址就是 配置在环境变量的了  VUE_APP_BASE_API
-    baseURL:process.env.NODE_ENV=='production'?process.env.VUE_APP_BASE_API:'',
+    baseURL: process.env.NODE_ENV == 'production' ? process.env.VUE_APP_BASE_API : '',
     timeout: 5000,//请求设置超时时间 单位毫秒 5s超时 接口请求5s没有响应数据 停止请求
 })
 
@@ -26,12 +26,12 @@ instance.interceptors.request.use(function (config) {//config发送请求的配�
     //config可以判断请求的方式get/post 请求url参数地址 headers请求头配置 参数data发送的数据等信息
     // console.log('config-请求拦截器',config);
     //对post请求处理参数
-    if(config.method =='post'){
+    if (config.method == 'post') {
         config.data = qs.stringify(config.data)
     }
     // 在发送请求之前做些什么--对post请求参数 处理字符串拼接
     return config;
-  }, function (error) {
+}, function (error) {
     // 对请求错误做些什么
     return Promise.reject(error);
 });
@@ -43,18 +43,18 @@ instance.interceptors.request.use(function (config) {//config发送请求的配�
 instance.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     return response;
-  }, function (error) {
-    console.log('error',error);
+}, function (error) {
+    console.log('error', error);
     // 对响应错误做点什么
     const { response } = error;
     //response.status 错误状态   500 服务器错误  response.info 信息提示
-    errorHandle(response.status,response.info)
+    errorHandle(response.status, response.info)
     // return Promise.reject(error);
 });
 
 //错误响应处理提示信息
-function errorHandle(status,info){
-    switch(status){
+function errorHandle(status, info) {
+    switch (status) {
         case 400:
             console.log("400-表示请求报文中存在语法错误");
             break;

@@ -1,12 +1,13 @@
 //公共的请求方法
 import axios from 'axios';
 import base from './base'
+import instance from '@/views/utils/request';
 
 const api = {
     // 登录界面
     // 登录接口 post params = { user, pwd }
     login(params) {
-        return axios.post(base.login, params)
+        return instance.post(base.login, params)
     },
     // 用户权限  params = { token: '' }
     permission(params) {
