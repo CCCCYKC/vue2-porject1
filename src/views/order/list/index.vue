@@ -92,7 +92,7 @@
     <!-- 表格 -->
     <div class="table">
       <!-- 方法：select 当选中勾选框时触发 -->
-      <el-table :data="tableData" border style="width: 100%" @select="select">
+      <el-table :data="tableData" border style="width: 100%" @select="select" header-cell-class-name="table-header">
         <!-- selectable	
             仅对 type=selection 的列有效,类型为 Function,返回值用来决定这一行的 CheckBox 是否可以勾选	
             Function(row, index) -->
@@ -322,6 +322,9 @@ export default {
   .table{
     background: #fff;
     padding: 0 15px 0 15px;
+    ::v-deep .table-header {
+    color: black;
+  }
   }
 }
 </style>
