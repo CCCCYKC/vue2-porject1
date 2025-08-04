@@ -16,16 +16,17 @@ export default {
   name: "BreadcrumbNav",
   computed: {
     navs() {
-      console.log("路由信息", this.$route.matched);
-      let routes = this.$route.matched; //this.$route.matched包含了当前的路由信息 以及父级的路由信息
-      //   对首页路由进行处理
-      routes[0].path = "/";
-      //   由于二级路由的页面为空，所以在router/index.js里面重定向
+      // console.log("路由信息", this.$route.matched);
+      // 深拷贝一份 matched，防止污染原路由对象
+      let routes = JSON.parse(JSON.stringify(this.$route.matched));
+      if (routes.length > 0) {
+        routes[0].path = "/"; // 只修改副本
+      }
       return routes;
     },
   },
   created() {
-    console.log(this.$route.matched);
+    console.log("面包屑导航所在界面的路由", this.$route.matched);
   },
 };
 </script>

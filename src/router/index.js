@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Router from 'vue-router';
 import Layout from "@/views/layout/index.vue";
 import Login from "@/views/login/index.vue";
 import Home from "@/views/home/home.vue";
@@ -13,13 +14,8 @@ Vue.use(VueRouter);
 
 const routes = [
     {
-        path: "/login",
-        name: "login",
-        component: Login
-    },
-    {
-        path: "/",
-        name:"layout",
+        path: "",
+        name: "layout",
         component: Layout,
         meta: {
             title: '首页',
@@ -56,8 +52,11 @@ const routes = [
             // 往里面动态添加路由
         ]
     },
-    
-
+    {
+        path: "/login",
+        name: "login",
+        component: Login
+    },
 ]
 
 const router = new VueRouter({
@@ -66,5 +65,22 @@ const router = new VueRouter({
     routes
 });
 
+// 禁用重复导航检测警告
+// 重写了 this.$router.push() 和 this.$router.replace()
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => {
+        console.log('路由导航失败：', err);
+        return err;
+    });
+};
+
+const originalReplace = Router.prototype.replace;
+Router.prototype.replace = function replace(location) {
+    return originalReplace.call(this, location).catch(err => {
+        console.log('路由导航失败：', err);
+        return err;
+    });
+};
 
 export default router;
