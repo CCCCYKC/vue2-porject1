@@ -2,7 +2,7 @@
 <template>
   <div class="listPage">
     <!-- 面包屑导航 -->
-     <BreadcrumbNav></BreadcrumbNav>   
+    <BreadcrumbNav></BreadcrumbNav>
     <!-- 1.产品搜索 -->
     <div class="header">
       <!-- 表单 -->
@@ -81,10 +81,20 @@
         ></el-table-column>
         <el-table-column prop="id" label="商品编号" width="120" align="center">
         </el-table-column>
-        <el-table-column prop="title" label="商品名称" width="120" align="center" show-overflow-tooltip>
+        <el-table-column
+          prop="title"
+          label="商品名称"
+          width="120"
+          align="center"
+          show-overflow-tooltip
+        >
           <template slot-scope="scope">
             <!-- 商品名称:高亮、可点击进入详情页 -->
-            <span style="color: #0077c8; cursor: pointer;" @click="handleLook(scope.$index, scope.row)">{{ scope.row.title }}</span>
+            <span
+              style="color: #0077c8; cursor: pointer"
+              @click="handleLook(scope.$index, scope.row)"
+              >{{ scope.row.title }}</span
+            >
           </template>
         </el-table-column>
         <el-table-column
@@ -185,14 +195,14 @@ export default {
     moment,
     // 声明HTML标签处理方法
     removeHTMLTag,
-    ...mapMutations('product',['changeRowData', 'changeTitle']), // Vuex方法：修改行数据
+    ...mapMutations("product", ["changeRowData", "changeTitle"]), // Vuex方法：修改行数据
     // 批量删除按钮------------
     deleteAll() {
       // 当没有选中时
-      if(this.ids.length === 0) {
+      if (this.ids.length === 0) {
         this.$message({
-          message: '必须选择一条记录进行批量删除',
-          type: 'warning'
+          message: "必须选择一条记录进行批量删除",
+          type: "warning",
         });
         return;
       }
@@ -206,7 +216,8 @@ export default {
       })
         .then(() => {
           // 请求批量删除后台接口
-          this.$api.batchDelete({ ids: idStr })
+          this.$api
+            .batchDelete({ ids: idStr })
             .then((res) => {
               console.log("批量删除商品请求----", res.data);
               if (res.data.status === 200) {
@@ -216,9 +227,11 @@ export default {
                 });
                 // 重新渲染视图----删除前所在页面 || 删完了本页的最后一页---->回到页面的前一页
                 const newTotal = this.total - this.ids.length; // 删除后的总记录=前总条数-ids.length
-                const totalPages = newTotal > 0 ? Math.ceil(newTotal / this.pageSize) : 1; // 总页数=向上取整(新总数/页大小)
+                const totalPages =
+                  newTotal > 0 ? Math.ceil(newTotal / this.pageSize) : 1; // 总页数=向上取整(新总数/页大小)
                 // 若当前页大于总页数，跳转到最后一页（否则停留在当前页）
-                const targetPage = this.currentPage > totalPages ? totalPages : this.currentPage;
+                const targetPage =
+                  this.currentPage > totalPages ? totalPages : this.currentPage;
                 this.projectList(targetPage); // 重新加载目标页数据
               }
             })
@@ -351,6 +364,13 @@ export default {
         const endIndex = startIndex + this.pageSize;
         // 有结果，只展示当前页的数据
         this.tableData = res.data.result.slice(startIndex, endIndex);
+        if (this.currentPage === 1) {
+          // 当搜索结果出来时(第一页)----------待优化
+          this.$message({
+            type: "success",
+            message: "搜索结果已完成！",
+          });
+        }
       } else {
         //无结果
         this.tableData = [];

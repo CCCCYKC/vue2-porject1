@@ -3,6 +3,11 @@ import axios from 'axios';
 import base from './base'
 import instance from '@/views/utils/request';
 
+// 单独导出  api内的可以删除
+export function permission(params) {
+    return axios.get(base.permission, { params })
+}
+
 const api = {
     // 登录界面
     // 登录接口 post params = { user, pwd }
@@ -13,6 +18,8 @@ const api = {
     permission(params) {
         return axios.get(base.permission, { params })
     },
+    // vue组件实例:this.$api.permission
+    // 仓库store中:1.单独导出permission方法 2.单独导入请求的接口方法  import { permission } from "@/api/index.js"
 
     // 首页
     // 获取首页统计数据
@@ -107,5 +114,6 @@ const api = {
         return axios.get(base.cancel, { params })
     },
 };
+
 
 export default api;

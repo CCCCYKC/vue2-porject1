@@ -47,7 +47,7 @@
           </el-menu-item>
           <el-menu-item index="/order/collection">
             <i class="el-icon-menu"></i>
-            <span slot="title">订单汇总</span>
+            <span slot="title">汇总清单</span>
           </el-menu-item>
           <el-menu-item index="/order/examine">
             <i class="el-icon-menu"></i>
@@ -75,7 +75,7 @@
         <el-menu-item-group>
           <el-menu-item index="/manage/staff">
             <i class="el-icon-menu"></i>
-            <span slot="title">人员管理</span>
+            <span slot="title">角色管理</span>
           </el-menu-item>
           <el-menu-item index="/manage/department">
             <i class="el-icon-menu"></i>

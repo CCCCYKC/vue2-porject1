@@ -17,8 +17,9 @@
         <div class="item">
           <el-dropdown @command="changeLang">
             <!-- command	点击菜单项触发的事件回调	dropdown-item 的指令 -->
-            <span class="el-dropdown-link"
-              >语言环境<i class="el-icon-arrow-down el-icon--right"></i>
+            <span class="el-dropdown-link">
+              语言环境
+              <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <!-- command	指令	string/number/object 类似于id,可以根据item的command判断点的是哪个 -->
@@ -64,6 +65,7 @@ export default {
     // 声明时间格式化函数----------
     moment,
     ...mapMutations("login", ["removeUser"]), // Vuex方法：保存用户信息
+    ...mapMutations("menu",["removeMenuList"]), // Vuex方法：清除动态路由数据
     // 点击图标传递数据给父组件layout/index.js----------
     changeMenu() {
       this.$emit("toggleMenu"); // 触发父组件的事件来切换菜单状态
@@ -79,11 +81,13 @@ export default {
     },
     // 退出登录
     handleLogout() {
-      // 逻辑：1.清除仓库中登录的数据 2.清除浏览器仓库中该账号的数据 3.跳转至登录界面
+      // 逻辑：1.清除仓库中登录的数据 2.清除浏览器仓库中该账号的数据 3.清除仓库里面动态菜单的数据 4.跳转至登录界面 
       this.removeUser();
       // 2.清除浏览器仓库中该账号的数据
       localStorage.removeItem("info");
-      // 3.跳转至登录界面
+      // 3.清除仓库里面动态菜单的数据
+      this.removeMenuList();
+      // 4.跳转至登录界面
       this.$router.push("/login");
     },
   },

@@ -55,7 +55,6 @@ export default {
     },
     // 登录请求
     async login(params) {
-      console.log("传递给接口的参数：", params);
       let res = await this.$api.login(params);
       console.log("登录请求接口", res.data);
       if (res.data.status === 200) {
