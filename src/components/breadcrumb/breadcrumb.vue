@@ -17,8 +17,8 @@ export default {
   computed: {
     navs() {
       // console.log("路由信息", this.$route.matched);
-      // 深拷贝一份 matched，防止污染原路由对象
-      let routes = JSON.parse(JSON.stringify(this.$route.matched));
+      // 解构复制 matched，防止污染原路由对象
+      let routes = { ...this.$route.matched };
       if (routes.length > 0) {
         routes[0].path = "/"; // 只修改副本
       }

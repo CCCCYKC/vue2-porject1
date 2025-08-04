@@ -1,45 +1,50 @@
 // 路由守卫
 
+// 问题：好像陷入循环了，有两个路由同时处理
+
 // 配置路由全局前置守卫导航
 import router from "./index.js";
 import store from "@/store"
 router.beforeEach((to, from, next) => {
-    console.log('所有路由：', router.getRoutes());
+    // 怎么避免重复导航
+
     // console.log('导航触发：', 'from', from.path, 'to', to.path); // 打印每次导航
-    // // 打印调用栈，查看是谁触发了这次导航
-    // console.trace('导航调用栈：');
-    // 判断进入的路由界面是否需要登录 不需要的则直接进入
-    if (to.matched.some(item => item.meta.isLogin)) {
+
+    // 判断进入的路由界面是否为登录界面，是的话直接跳登录页
+    if (to.path !== '/login') {
         // 需要登录 判断是否已经登录 ==> token值是否存在
         let token = store.state.login.userInfo.token;
         if (token) { //已登录
             // 判断vuex中是否已经含有动态导航，若没有则要获取
-            if (store.state.menu.divMenuList.length === 0) {      //无导航
+            if (store.state.menu.divMenuList.length == 0) {      //无导航
+                console.log('添加前路由：', router.getRoutes());
                 store.dispatch('menu/getMenuList')      //返回值为一个promise
                     .then(res => {
                         console.log('路由前置守卫中获取vuex动态导航的返回值--', res);
                         // 把菜单导航追加在路由实例上面
-                        res.forEach(ele => {        //循环数组将对象都添加到name='layout'的子路由里面
-                            router.addRoute("layout", ele);
+                        res.forEach(ele => {
+                            router.addRoute(ele);
                         })
-                        // console.log('router.getRoutes', router.getRoutes());
-                        // console.log('修正后路由：', router);
-                        // // 关键：基于新路由表重新跳转，替换当前旧导航任务
-                        // // ...to 根据最新的路由表跳转 replace: true 让跳转后的界面无法退后一步回到登录界面
-                        return next({ ...to, replace: true });
+                        console.log('添加后路由：', router.getRoutes());
                     })
-                    .catch(err => {
-                        console.log('获取动态导航出错：', err);
-                        next('/login'); // 异常时跳转登录
-                    });
+                    // 关键：基于新路由表重新跳转，替换当前旧导航任务
+                    // ...to 根据最新的路由表跳转 replace: true 让跳转后的界面无法退后一步回到登录界面
+                    // { path: '', name: 'layout', replace: true }
+                    .then(next());
             } else {   //有导航则直接跳转
+                // store.commit('login/removeUser')
+                // store.commit('menu/removeMenuList')
+                console.log('有动态导航则直接跳转')
+                console.log('router.getRoutes', router.getRoutes())
                 next(); //跳转至to路由
             }
         } else {
+            console.log('未登录，先跳转登录页')
             next('/login'); //跳转至登录页
         }
     } else {
-        // 不需要登录，直接进入
+        // 直接进入登录页
+        console.log('直接进入登录页')
         next();
     }
 })

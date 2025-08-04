@@ -148,10 +148,6 @@ export default {
     this.orderInfo();
     this.lineInfo();
   },
-  mounted() {
-    //最早获取DOM元素的生命周期函数 挂载完毕执行
-    console.log('路由',this.$route)
-  },
   methods: {
     async totalInfo() {
       let res = await this.$api.totalInfo();

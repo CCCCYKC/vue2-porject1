@@ -13,9 +13,9 @@ const store = new Store({
   },
   mutations: {  // 同步修改状态
     // 同步修改isCollapse状态
-    changeCollapse(state,bool) {
+    changeCollapse(state, bool) {
       state.isCollapse = bool; // 修改侧边栏折叠状态
-    }
+    },
   },
   actions: {},   // 异步操作
   modules: {
@@ -27,7 +27,7 @@ const store = new Store({
     createPersistedstate({
       // storage: window.localStorage, // 使用本地存储(默认是localStorage)
       key: 'info', // 存储vuex数据的任意键名key--本地存储里面 localStorage.info
-      paths: ['product','login','menu'], // 只持久化['']内模块的数据--存储的模块名称一级全局state数据  不写默认存储所有内容
+      paths: ['product', 'login', 'menu'], // 只持久化['']内模块的数据--存储的模块名称一级全局state数据  不写默认存储所有内容
     })]
 })
 

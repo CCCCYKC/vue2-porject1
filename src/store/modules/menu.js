@@ -9,9 +9,11 @@ import { permission } from "@/api/index.js"
 // 导入定义好的完整的菜单导航路由
 import { menu } from '@/router/menu'
 // 导入路由(只含登录和首页)，根据匹配结果往里面填充
-// import router from '@/router/index'
+import { baseRoutes } from '@/router/index'
 // 导入菜单匹配方法
 import { matchMenu } from "@/views/utils/common.js";
+// 导入深拷贝方法
+import { cloneDeep } from 'lodash'
 export default {
     namespaced: true,
     state: {
@@ -38,10 +40,13 @@ export default {
             // 定义方法在utils的公共方法common里面
             let myMenu = matchMenu(menu, res.data.data);
             console.log('处理好的要加入routes的菜单导航', myMenu);
-
             // 存储处理好的动态导航
             commit('setMenuList', myMenu);
-            return myMenu;
+            // 将匹配好的动态路由加到基础路由的子级里面 防止更改原路由，用解构方法
+            let returnArr = cloneDeep(baseRoutes);
+            returnArr[0].children.push(...myMenu);
+
+            return returnArr;
         }
     }
 }
