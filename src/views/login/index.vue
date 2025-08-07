@@ -21,6 +21,7 @@
           >登录</el-button
         >
       </div>
+      <div class="txt">---- admin 是管理员账号，密码可以随便输 ----</div>
     </div>
   </div>
 </template>

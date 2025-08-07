@@ -54,7 +54,7 @@ export default {
   created() {
     // 初始化、刷新时设置激活菜单
     this.active = this.$route.meta.activeMenu || this.$route.path;
-    console.log("仓库的动态菜单导航", this.divMenuList);
+    // console.log("仓库的动态菜单导航", this.divMenuList);
   },
   watch: {
     // 设置动态路由，

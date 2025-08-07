@@ -13,9 +13,10 @@ export function removeHTMLTag(htmlStr) {
 // arrFront 前端的菜单导航 arrBack 后端的菜单导航
 // 匹配规则： 前端的meta.title = 后端的name ，则将前端的存到myArr里面
 // 深拷贝：JSON.parse(JSON.stringify())   保证前端的菜单数据不被修改
+import { cloneDeep } from "lodash";
 export function matchMenu(arrFront, arrBack) {
     let myArr = [];  //匹配好的菜单导航
-    let arr = JSON.parse(JSON.stringify(arrFront));
+    let arr = cloneDeep(arrFront);
     arr.forEach(ele => {
         arrBack.forEach(item => {
             if (ele.meta.title == item.name) {
