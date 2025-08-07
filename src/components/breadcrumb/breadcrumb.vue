@@ -1,6 +1,6 @@
 <template>
   <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
-    <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item -->
+    <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
     <el-breadcrumb-item
       v-for="item in navs"
       :key="item.path"
@@ -16,12 +16,12 @@ export default {
   name: "BreadcrumbNav",
   computed: {
     navs() {
-      // console.log("路由信息", this.$route.matched);
       // 解构复制 matched，防止污染原路由对象
-      let routes = { ...this.$route.matched };
+      let routes = [ ...this.$route.matched ];
       if (routes.length > 0) {
         routes[0].path = "/"; // 只修改副本
       }
+      console.log("修改解构结果", routes);
       return routes;
     },
   },

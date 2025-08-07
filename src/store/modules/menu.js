@@ -1,9 +1,5 @@
 // 存储动态路由导航
 
-// state：存储全局状态，组件通过 this.$store.state 访问。
-// mutations：同步修改 state 的唯一方式，通过 this.$store.commit 调用。
-// actions：用于处理**异步**操作，通过 this.$store.dispatch 调用，最终通过 mutations 修改 state。
-
 // 导入请求的接口方法
 import { permission } from "@/api/index.js"
 // 导入定义好的完整的菜单导航路由
