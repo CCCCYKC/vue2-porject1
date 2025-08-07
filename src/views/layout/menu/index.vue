@@ -18,10 +18,11 @@
         <!-- <span slot="title">首页</span> -->
         <span slot="title">{{ $t("menu.home") }}</span>
       </el-menu-item>
-      <el-submenu index="/produce">
+      <!-- 动态菜单导航 -->
+       <MenuList></MenuList>
+      <!-- <el-submenu index="/produce">
         <template slot="title">
           <i class="el-icon-location"></i>
-          <!-- <span>产品管理</span> -->
           <span>{{ $t("menu.productTitle") }}</span>
         </template>
         <el-menu-item-group>
@@ -54,7 +55,7 @@
             <span slot="title">订单审核</span>
           </el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
+      </el-submenu> -->
       <el-submenu index="/advert">
         <template slot="title">
           <i class="el-icon-location"></i>
@@ -67,7 +68,7 @@
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="/manage">
+      <!-- <el-submenu index="/manage">
         <template slot="title">
           <i class="el-icon-setting"></i>
           <span slot="title">系统管理</span>
@@ -82,14 +83,18 @@
             <span slot="title">部门管理</span>
           </el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
+      </el-submenu> -->
     </el-menu>
   </div>
 </template>
 
 <script>
+import MenuList from "./MenuList.vue";
 export default {
   name: "MenuPage",
+  components: {
+    MenuList,
+  },
   data() {
     return {
       // isCollapse: false, // 控制菜单是否折叠

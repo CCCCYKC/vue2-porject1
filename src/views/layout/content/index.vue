@@ -65,7 +65,7 @@ export default {
     // 声明时间格式化函数----------
     moment,
     ...mapMutations("login", ["removeUser"]), // Vuex方法：保存用户信息
-    ...mapMutations("menu",["removeMenuList"]), // Vuex方法：清除动态路由数据
+    ...mapMutations("menu", ["removeMenuList"]), // Vuex方法：清除动态路由数据
     // 点击图标传递数据给父组件layout/index.js----------
     changeMenu() {
       this.$emit("toggleMenu"); // 触发父组件的事件来切换菜单状态
@@ -81,12 +81,14 @@ export default {
     },
     // 退出登录
     handleLogout() {
-      // 逻辑：1.清除仓库中登录的数据 2.清除浏览器仓库中该账号的数据 3.清除仓库里面动态菜单的数据 4.跳转至登录界面 
-      this.removeUser();
+      // 逻辑：1.清除仓库中登录的数据 2.清除浏览器仓库中该账号的数据 3.清除仓库里面动态菜单的数据 4.跳转至登录界面
+      // this.removeUser();
+      this.$store.commit("login/removeUser");
       // 2.清除浏览器仓库中该账号的数据
       localStorage.removeItem("info");
       // 3.清除仓库里面动态菜单的数据
-      this.removeMenuList();
+      // this.removeMenuList();
+      this.$store.commit("menu/removeMenuList");
       // 4.跳转至登录界面
       this.$router.push("/login");
     },
@@ -94,6 +96,17 @@ export default {
   created() {
     // 第一次加载时更新-------待改进----每分钟更新一次
     this.autoTime();
+  },
+  beforeDestroy() {
+    // 组件销毁后
+    // 逻辑：1.清除仓库中登录的数据 2.清除浏览器仓库中该账号的数据 3.清除仓库里面动态菜单的数据 4.移除动态路由
+    this.$store.commit("login/removeUser");
+    // 2.清除浏览器仓库中该账号的数据
+    localStorage.removeItem("info");
+    // 3.清除仓库里面动态菜单的数据
+    this.$store.commit("menu/removeMenuList");
+    // // 4.移除动态路由 直接移除name=layout的
+    this.$store.dispatch("menu/removeRouteByName", "layout");
   },
 };
 </script>

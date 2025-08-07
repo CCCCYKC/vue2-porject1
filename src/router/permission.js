@@ -1,14 +1,17 @@
 // 路由守卫
 
-// 问题：好像陷入循环了，有两个路由同时处理
+// 问题：1.好像陷入循环了，有两个路由同时处理
+// 2.组件加载不成功
 
 // 配置路由全局前置守卫导航
-import router from "./index.js";
+import router, { baseRoutes } from "./index.js";
 import store from "@/store"
+// 导入深拷贝方法
+import { cloneDeep } from 'lodash'
 router.beforeEach((to, from, next) => {
     // 怎么避免重复导航
 
-    // console.log('导航触发：', 'from', from.path, 'to', to.path); // 打印每次导航
+    console.log('导航触发：', 'from', from.path, 'to', to.path); // 打印每次导航
 
     // 判断进入的路由界面是否为登录界面，是的话直接跳登录页
     if (to.path !== '/login') {
@@ -34,8 +37,8 @@ router.beforeEach((to, from, next) => {
             } else {   //有导航则直接跳转
                 // store.commit('login/removeUser')
                 // store.commit('menu/removeMenuList')
-                console.log('有动态导航则直接跳转')
                 console.log('router.getRoutes', router.getRoutes())
+                console.log('有动态导航则直接跳转')
                 next(); //跳转至to路由
             }
         } else {
@@ -53,7 +56,10 @@ router.beforeEach((to, from, next) => {
 // 页面刷新时，重新添加动态路由（因为路由实例会重置）
 // 已登录且已经有动态路由
 if (store.state.login.userInfo.token && store.state.menu.divMenuList.length > 0) {
-    store.state.menu.divMenuList.forEach(ele => {
-        router.addRoute("layout", ele);
+    console.log('baseRoutes', baseRoutes)
+    let returnArr = cloneDeep(baseRoutes);
+    returnArr[0].children.push(...store.state.menu.divMenuList);
+    returnArr.forEach(ele => {
+        router.addRoute(ele);
     });
 }
