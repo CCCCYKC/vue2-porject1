@@ -39,16 +39,16 @@ export default {
   name: "MenuList", //组件名称 调用name就是调用当前组件本身
   props: {
     // 接受要遍历的对象
-    divMenuList: Object,
+    divMenuList: Array,
     // 上级的路径
     itemPath: {
       type: String,
       default: "",
     },
   },
-  created() {
-    console.log("props--divMenuList", this.divMenuList);
-  },
+  // created() {
+  //   console.log("props--divMenuList", this.divMenuList);
+  // },
 };
 </script>
 

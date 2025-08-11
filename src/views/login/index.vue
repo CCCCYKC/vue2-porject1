@@ -62,7 +62,7 @@ export default {
         // 1.存储登录信息
         this.setUser({ username: this.input.username, token: res.data.token });
         // 2.跳转至首页 用replace 防止多次跳转
-        this.$router.push("/");
+        this.$router.replace("/");
       }
     },
   },
